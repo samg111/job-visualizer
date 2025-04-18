@@ -1,4 +1,4 @@
-module basic-excel-reader
+module job-visualizer
 
 go 1.24.2
 
