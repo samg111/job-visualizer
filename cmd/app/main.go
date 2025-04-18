@@ -1,8 +1,8 @@
 package main
 
 import (
-	"basic-excel-reader/pkg/excel"
-	"basic-excel-reader/pkg/gui"
+	"job-visualizer/pkg/excel"
+	"job-visualizer/pkg/gui"
 
 	"fmt"
 )
@@ -13,4 +13,6 @@ func main() {
 	file := excel.OpenExcelFile()
 	rows := excel.GetAllRows(file)
 	fmt.Println(rows)
+
+	// allJobData := excel.ProcessRows(rows, []structs.JobData{})
 }
