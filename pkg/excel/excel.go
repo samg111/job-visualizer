@@ -8,7 +8,8 @@ import (
 )
 
 func OpenExcelFile() *excelize.File {
-	os.Chdir("../..")
+	err := os.Chdir("../..")
+	checkError(err)
 	file, err := excelize.OpenFile("JobData.xlsx")
 	checkError(err)
 	return file
