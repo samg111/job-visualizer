@@ -4,7 +4,7 @@ on:
   push:
     branches: 
         - "main"
-        - "adding-linter"
+        - "adding-testing"
   pull_request:
     branches: [ "main" ]
 
@@ -32,11 +32,11 @@ jobs:
       working-directory: cmd/app
       run: go build -o job-visualizer
 
-    # - name: Test
-    #   run: go test -v ./...
-
     - name: Install golangci-lint
       run: go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
 
     - name: Run golangci-lint
       run: golangci-lint run
+
+    - name: Test
+      run: go test -v ./...
