@@ -3,6 +3,7 @@ package main
 import (
 	"job-visualizer/pkg/excel"
 	"job-visualizer/pkg/gui"
+	"job-visualizer/pkg/structs"
 
 	"fmt"
 )
@@ -12,7 +13,20 @@ func main() {
 
 	file := excel.OpenExcelFile()
 	rows := excel.GetAllRows(file)
-	fmt.Println(rows)
 
-	// allJobData := excel.ProcessRows(rows, []structs.JobData{})
+	allJobData := excel.ProcessRows(rows, []structs.JobData{})
+
+	for i, job := range allJobData {
+		fmt.Printf("Job %d:\n", i+1)
+		fmt.Printf("  Location: %s\n", job.Location)
+		fmt.Printf("  Job Title: %s\n", job.JobTitle)
+		fmt.Printf("  Company Name: %s\n", job.CompanyName)
+		fmt.Printf("  Description: %s\n", job.Description)
+		fmt.Printf("  Date Posted: %s\n", job.DatePosted)
+		fmt.Printf("  Salary: %s\n", job.Salary)
+		fmt.Printf("  Work From Home: %s\n", job.WorkFromHome)
+		fmt.Printf("  Qualifications: %s\n", job.Qualifications)
+		fmt.Printf("  Links: %s\n", job.Links)
+		fmt.Println()
+	}
 }

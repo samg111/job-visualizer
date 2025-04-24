@@ -4,6 +4,8 @@ import (
 	"log"
 	"os"
 
+	"job-visualizer/pkg/structs"
+
 	"github.com/xuri/excelize/v2"
 )
 
@@ -21,18 +23,18 @@ func GetAllRows(file *excelize.File) [][]string {
 	return rows
 }
 
-// func ProcessRows(rows [][]string, allJobData []structs.JobData) []structs.JobData {
-// 	for _, row := range rows[1:] {
-// 		job := structs.JobData{}
-// 		job.CompanyName = row[0]
-// 		job.DatePosted = row[1]
-// 		job.Location = row[4]
-// 		// job.Salary = CalcSalary(row)
-// 		job.JobTitle = row[9]
-// 		allJobData = append(allJobData, job)
-// 	}
-// 	return allJobData
-// }
+func ProcessRows(rows [][]string, allJobData []structs.JobData) []structs.JobData {
+	for _, row := range rows[1:] {
+		job := structs.JobData{}
+		job.CompanyName = row[0]
+		job.DatePosted = row[1]
+		job.Location = row[4]
+		// job.Salary = CalcSalary(row)
+		job.JobTitle = row[9]
+		allJobData = append(allJobData, job)
+	}
+	return allJobData
+}
 
 func checkError(err error) {
 	if err != nil {
