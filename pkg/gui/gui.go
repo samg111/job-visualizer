@@ -1,12 +1,19 @@
 package gui
 
 import (
+	"job-visualizer/pkg/structs"
+
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 )
 
-func CreateGui() {
+var window structs.GuiWindow
+
+func CreateGui(jobs []structs.JobData) {
 	mainWindow := createGuiWindow()
+	// window = structs.GuiWindow{}
+	BuildWindow(mainWindow, jobs)
+
 	mainWindow.ShowAndRun()
 }
 
