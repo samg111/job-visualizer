@@ -9,8 +9,6 @@ import (
 )
 
 func main() {
-	gui.CreateGui()
-
 	file := excel.OpenExcelFile()
 	rows := excel.GetAllRows(file)
 
@@ -29,4 +27,6 @@ func main() {
 		fmt.Printf("  Links: %s\n", job.Links)
 		fmt.Println()
 	}
+
+	gui.CreateGui(allJobData)
 }
