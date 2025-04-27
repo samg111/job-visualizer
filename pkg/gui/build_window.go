@@ -26,14 +26,14 @@ func buildLeftPane(jobs []structs.JobData) *container.Split {
 	}
 
 	topContainer := BuildTopLeftComponents(jobs)
-	// filterContainer, remoteCheckbox := buildFilterComponents()
-	// dataButton := widget.NewButton("Click to filter the jobs", func() {
-	// 	getJobData(jobs)
-	// 	// openWebpage()
-	// })
-	topPane := container.NewVBox(topContainer)
+	filterContainer, remoteCheckbox := BuildFilterComponents()
+	dataButton := widget.NewButton("Click to filter the jobs", func() {
+		getJobData(jobs)
+		// openWebpage()
+	})
+	// topPane := container.NewVBox(topContainer)
+	topPane := container.NewVBox(topContainer, filterContainer, remoteCheckbox, dataButton)
 	bottomPane := container.NewVBox(window.ListWidget)
-	// topPane := container.NewVBox(topLeftContainer, filterContainer, remoteCheckbox, dataButton)
 	leftPane := container.NewVSplit(topPane, bottomPane)
 	return leftPane
 }
@@ -64,29 +64,6 @@ func formatJobDetails(i int) string {
 	return formattedDetails
 }
 
-// func buildTopLeftComponents(jobs []structs.JobData) *fyne.Container {
-// 	mapButton := widget.NewButton("Click to open/refresh map", func() {})
-// 	getJobsButton := widget.NewButton("Click get unfiltered jobs or refresh list of jobs/filters to original", func() {
-// 		removeActiveFilters()
-// 		getJobData(jobs)
-// 		// openWebpage()
-// 		refreshEntries()
-// 	})
-// 	displayPane := container.NewVBox(getJobsButton, mapButton)
-// 	return displayPane
-// }
-
-// func removeActiveFilters() {
-// 	window.Filters.KeywordEntry = ""
-// 	window.Filters.LocationEntry = ""
-// 	window.Filters.MinSalaryEntry = ""
-// 	window.Filters.WorkFromHomeEntry = false
-// }
-
-// func getJobData(jobs []structs.JobData) {
-// 	window.JobDataGui = GetJobData(jobs)
-// }
-
 // func refreshEntries() {
 // 	window.KeywordEntryWidget.SetText("")
 // 	window.LocationEntryWidget.SetText("")
@@ -114,25 +91,16 @@ func buildRightPane() *fyne.Container {
 	return rightPane
 }
 
-// func buildFilterComponents() (*fyne.Container, *widget.Check) {
-// 	keywordContainer := buildKeywordContainer()
-// 	locationContainer := buildLocationContainer()
-// 	minSalaryContainer := buildMinSalaryContainer()
-// 	filterContainer := container.NewVBox(keywordContainer, locationContainer, minSalaryContainer)
-// 	remoteCheckbox := buildRemoteCheckbox()
-// 	return filterContainer, remoteCheckbox
+// func buildRemoteCheckbox() *widget.Check {
+// 	remoteCheckbox := widget.NewCheck("Remote Work: check for yes, uncheck for all", func(checked bool) {
+// 		if checked {
+// 			window.Filters.WorkFromHomeEntry = true
+// 		} else {
+// 			window.Filters.WorkFromHomeEntry = false
+// 		}
+// 	})
+// 	return remoteCheckbox
 // }
-
-func buildRemoteCheckbox() *widget.Check {
-	remoteCheckbox := widget.NewCheck("Remote Work: check for yes, uncheck for all", func(checked bool) {
-		if checked {
-			window.Filters.WorkFromHomeEntry = true
-		} else {
-			window.Filters.WorkFromHomeEntry = false
-		}
-	})
-	return remoteCheckbox
-}
 
 // func buildMinSalaryContainer() *fyne.Container {
 // 	window.MinSalaryEntryWidget = widget.NewEntry()
