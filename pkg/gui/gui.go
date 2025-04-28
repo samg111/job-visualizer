@@ -1,6 +1,7 @@
 package gui
 
 import (
+	"fmt"
 	"job-visualizer/pkg/structs"
 
 	"fyne.io/fyne/v2"
@@ -22,4 +23,10 @@ func createGuiWindow() fyne.Window {
 	window := application.NewWindow("fyne window")
 	window.Resize(fyne.NewSize(1000, 600))
 	return window
+}
+
+func checkErrorWarn(err error) {
+	if err != nil {
+		fmt.Println(err)
+	}
 }

@@ -33,7 +33,8 @@ func buildLeftPane(jobs []structs.JobData) *container.Split {
 	})
 	// topPane := container.NewVBox(topContainer)
 	topPane := container.NewVBox(topContainer, filterContainer, remoteCheckbox, dataButton)
-	bottomPane := container.NewVBox(window.ListWidget)
+	// bottomPane := container.NewVBox(container.NewStack(window.ListWidget))
+	bottomPane := container.NewScroll(window.ListWidget)
 	leftPane := container.NewVSplit(topPane, bottomPane)
 	return leftPane
 }
