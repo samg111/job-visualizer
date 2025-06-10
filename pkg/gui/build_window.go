@@ -8,9 +8,9 @@ func buildWindow(gui_data GuiData) {
 	mainWindow := gui_data.mainWindow
 	jobs := gui_data.jobs
 
-	leftPane := buildLeftSplit(jobs)
-	rightPane := buildRightSplit()
-	contentPane := container.NewHSplit(leftPane, rightPane)
+	leftSplit := buildLeftSplit(jobs)
+	rightSplit := buildRightSplit()
+	contentPane := container.NewHSplit(leftSplit, rightSplit)
 
 	mainWindow.SetContent(contentPane)
 }
