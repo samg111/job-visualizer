@@ -3,6 +3,10 @@ package gui
 import (
 	"fmt"
 
+	// "job-visualizer/pkg/gui/components"
+	// "job-visualizer/pkg/gui/job_data"
+	// "job-visualizer/pkg/gui/components"
+	// "job-visualizer/pkg/gui/job_d"
 	"job-visualizer/pkg/structs"
 
 	"fyne.io/fyne/v2"
@@ -11,7 +15,11 @@ import (
 	// "github.com/skratchdot/open-golang/open"
 )
 
-func BuildWindow(mainWindow fyne.Window, jobs []structs.JobData) {
+func buildWindow(gui_data GuiData) {
+	// window := Window
+	mainWindow := gui_data.mainWindow
+	jobs := gui_data.jobs
+
 	leftPane := buildLeftPane(jobs)
 	rightPane := buildRightPane()
 	contentPane := container.NewHSplit(leftPane, rightPane)
@@ -20,42 +28,52 @@ func BuildWindow(mainWindow fyne.Window, jobs []structs.JobData) {
 }
 
 func buildLeftPane(jobs []structs.JobData) *container.Split {
-	window.ListWidget = widget.NewList(getDataLength, createListItem, updateListItem)
-	window.ListWidget.OnSelected = func(i int) {
-		window.SelectedJobDetails = formatJobDetails(i)
+	// dataLen:= len(*window.JobDataGui)
+	getDataLen := func() int {
+		if Window.JobDataGui == nil {
+			return 0
+		}
+		return len(*Window.JobDataGui)
+	}
+
+	updateListItem := func(itemNum widget.ListItemID, listItem fyne.CanvasObject) {
+		itemName := (*Window.JobDataGui)[itemNum].CompanyName
+		listItem.(*widget.Label).SetText(itemName)
+	}
+	Window.ListWidget = widget.NewList(getDataLen, createListItem, updateListItem)
+	Window.ListWidget.OnSelected = func(i int) {
+		Window.SelectedJobDetails = formatJobDetails(i, Window)
 	}
 
 	topContainer := BuildTopLeftComponents(jobs)
 	filterContainer, remoteCheckbox := BuildFilterComponents()
 	dataButton := widget.NewButton("Click to filter the jobs", func() {
-		getJobData(jobs)
+		GetJobData(jobs)
 		// openWebpage()
 	})
-	// topPane := container.NewVBox(topContainer)
 	topPane := container.NewVBox(topContainer, filterContainer, remoteCheckbox, dataButton)
-	// bottomPane := container.NewVBox(container.NewStack(window.ListWidget))
-	bottomPane := container.NewScroll(window.ListWidget)
+	bottomPane := container.NewScroll(Window.ListWidget)
 	leftPane := container.NewVSplit(topPane, bottomPane)
 	return leftPane
 }
 
-func getDataLength() int {
-	if window.JobDataGui == nil {
-		return 0
-	}
-	return len(*window.JobDataGui)
-}
+// func getDataLength() int {
+// 	if Window.JobDataGui == nil {
+// 		return 0
+// 	}
+// 	return len(*Window.JobDataGui)
+// }
 
 func createListItem() fyne.CanvasObject {
 	return widget.NewLabel("list items here")
 }
 
-func updateListItem(itemNum widget.ListItemID, listItem fyne.CanvasObject) {
-	itemName := (*window.JobDataGui)[itemNum].CompanyName
-	listItem.(*widget.Label).SetText(itemName)
-}
+// func updateListItem(window structs.GuiWindow, itemNum widget.ListItemID, listItem fyne.CanvasObject) {
+// 	itemName := (*window.JobDataGui)[itemNum].CompanyName
+// 	listItem.(*widget.Label).SetText(itemName)
+// }
 
-func formatJobDetails(i int) string {
+func formatJobDetails(i int, window structs.GuiWindow) string {
 	jobData := *window.JobDataGui
 	job := jobData[i]
 	formattedDetails := fmt.Sprintf("Company Name:\n\t%s\n\nJob Title:\n\t%s\n\nLocation:\n\t%s\n\nDate Posted:"+
@@ -82,13 +100,13 @@ func formatJobDetails(i int) string {
 
 func buildRightPane() *fyne.Container {
 	detailsButton := widget.NewButton("Click to display selected job details", func() {
-		window.DetailsWidget.SetText(window.SelectedJobDetails)
+		Window.DetailsWidget.SetText(Window.SelectedJobDetails)
 	})
 	detailsLabel := widget.NewLabelWithStyle("Select a job to display details", fyne.TextAlignLeading,
 		fyne.TextStyle{Bold: false, Italic: false})
 	detailsLabel.Wrapping = fyne.TextWrapWord
-	window.DetailsWidget = detailsLabel
-	rightPane := container.NewVBox(detailsButton, window.DetailsWidget)
+	Window.DetailsWidget = detailsLabel
+	rightPane := container.NewVBox(detailsButton, Window.DetailsWidget)
 	return rightPane
 }
 

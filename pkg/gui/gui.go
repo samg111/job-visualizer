@@ -8,21 +8,31 @@ import (
 	"fyne.io/fyne/v2/app"
 )
 
-var window structs.GuiWindow
+var Window structs.GuiWindow
+
+type GuiData struct {
+	mainWindow fyne.Window
+	jobs       []structs.JobData
+}
 
 func CreateGui(jobs []structs.JobData) {
+	// var window structs.GuiWindow
 	mainWindow := createGuiWindow()
-	// window = structs.GuiWindow{}
-	BuildWindow(mainWindow, jobs)
+	// guiWindow = structs.GuiWindow{}
+	gui_data := GuiData{
+		mainWindow: mainWindow,
+		jobs:       jobs,
+	}
+	buildWindow(gui_data)
 
 	mainWindow.ShowAndRun()
 }
 
 func createGuiWindow() fyne.Window {
 	application := app.New()
-	window := application.NewWindow("fyne window")
-	window.Resize(fyne.NewSize(1000, 600))
-	return window
+	Window := application.NewWindow("fyne window")
+	Window.Resize(fyne.NewSize(1000, 600))
+	return Window
 }
 
 func checkErrorWarn(err error) {
