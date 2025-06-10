@@ -16,16 +16,9 @@ type GuiData struct {
 }
 
 func CreateGui(jobs []structs.JobData) {
-	// var window structs.GuiWindow
 	mainWindow := createGuiWindow()
-	// guiWindow = structs.GuiWindow{}
-	// gui_data := GuiData{
-	// 	mainWindow: mainWindow,
-	// 	jobs:       jobs,
-	// }
 	gui_data := creatGuiData(mainWindow, jobs)
 	buildWindow(gui_data)
-
 	mainWindow.ShowAndRun()
 }
 
