@@ -16,15 +16,9 @@ type GuiData struct {
 }
 
 func CreateGui(jobs []structs.JobData) {
-	// var window structs.GuiWindow
 	mainWindow := createGuiWindow()
-	// guiWindow = structs.GuiWindow{}
-	gui_data := GuiData{
-		mainWindow: mainWindow,
-		jobs:       jobs,
-	}
+	gui_data := creatGuiData(mainWindow, jobs)
 	buildWindow(gui_data)
-
 	mainWindow.ShowAndRun()
 }
 
@@ -33,6 +27,14 @@ func createGuiWindow() fyne.Window {
 	Window := application.NewWindow("fyne window")
 	Window.Resize(fyne.NewSize(1000, 600))
 	return Window
+}
+
+func creatGuiData(mainWindow fyne.Window, jobs []structs.JobData) GuiData {
+	gui_data := GuiData{
+		mainWindow: mainWindow,
+		jobs:       jobs,
+	}
+	return gui_data
 }
 
 func checkErrorWarn(err error) {
