@@ -11,8 +11,8 @@ import (
 
 func buildLeftSplit(jobs []structs.JobData) *container.Split {
 	createJobList()
-	topContainer := BuildTopLeftComponents(jobs)
-	filterContainer, remoteCheckbox := BuildFilterComponents()
+	topContainer := buildTopLeftComponents(jobs)
+	filterContainer, remoteCheckbox := buildFilterComponents()
 	dataButton := createDataButton(jobs)
 	topPane := container.NewVBox(topContainer, filterContainer, remoteCheckbox, dataButton)
 	bottomPane := container.NewScroll(Window.ListWidget)
