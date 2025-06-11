@@ -5,6 +5,8 @@ import (
 	"job-visualizer/pkg/excel"
 	"job-visualizer/pkg/gui"
 	"job-visualizer/pkg/structs"
+
+	_ "modernc.org/sqlite"
 )
 
 func main() {
