@@ -28,6 +28,8 @@ func ProcessRows(rows [][]string, allJobData []structs.JobData) []structs.JobDat
 		job := structs.JobData{}
 		job.CompanyName = row[0]
 		job.DatePosted = row[1]
+		job.JobId = row[2]
+		job.Country = row[3]
 		job.Location = row[4]
 		// job.Salary = CalcSalary(row)
 		job.JobTitle = row[9]

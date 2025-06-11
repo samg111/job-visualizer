@@ -14,6 +14,8 @@ type JobData struct {
 	WorkFromHome   string
 	Qualifications string
 	Links          string
+	JobId          string
+	Country        string
 	// LatLong        LatLong
 }
 
