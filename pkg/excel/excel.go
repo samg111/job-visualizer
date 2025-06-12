@@ -3,6 +3,7 @@ package excel
 import (
 	"log"
 	"os"
+	"strconv"
 
 	"job-visualizer/pkg/structs"
 
@@ -31,11 +32,31 @@ func ProcessRows(rows [][]string, allJobData []structs.JobData) []structs.JobDat
 		job.JobId = row[2]
 		job.Country = row[3]
 		job.Location = row[4]
-		// job.Salary = CalcSalary(row)
+		job.Salary = calcSalary(row)
 		job.JobTitle = row[9]
 		allJobData = append(allJobData, job)
 	}
 	return allJobData
+}
+
+func calcSalary(row []string) string {
+	maxSalary := row[6]
+	minSalary := row[7]
+	hourlyOrYearly := row[8]
+
+	maxSalaryFloat, err := strconv.ParseFloat(maxSalary, 64)
+	checkError(err)
+	maxSalaryInt := int(maxSalaryFloat)
+	minSalaryFloat, err := strconv.ParseFloat(minSalary, 64)
+	checkError(err)
+	minSalaryInt := int(minSalaryFloat)
+	salaryInt := (maxSalaryInt + minSalaryInt) / 2
+	if hourlyOrYearly == "hourly" {
+		salaryInt = salaryInt * 40 * 50
+	}
+	salary := strconv.Itoa(salaryInt)
+	return salary
+
 }
 
 func checkError(err error) {
