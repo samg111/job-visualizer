@@ -14,7 +14,7 @@ func main() {
 	rows := excel.GetAllRows(file)
 	allJobData := excel.ProcessRows(rows, []structs.JobData{})
 
-	jobsDatabase := database.OpenOrCreateDatabase()
+	jobsDatabase := database.CreateDatabase()
 	database.SetupDatabase(jobsDatabase)
 	database.WriteToDatabase(jobsDatabase, allJobData)
 
@@ -23,6 +23,8 @@ func main() {
 	// 	fmt.Printf("  Location: %s\n", job.Location)
 	// 	fmt.Printf("  Job Title: %s\n", job.JobTitle)
 	// 	fmt.Printf("  Company Name: %s\n", job.CompanyName)
+	// 	fmt.Printf("  Job Id: %s\n", job.JobId)
+	// 	fmt.Printf("  Country: %s\n", job.Country)
 	// 	fmt.Printf("  Description: %s\n", job.Description)
 	// 	fmt.Printf("  Date Posted: %s\n", job.DatePosted)
 	// 	fmt.Printf("  Salary: %s\n", job.Salary)
