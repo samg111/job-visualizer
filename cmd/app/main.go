@@ -4,6 +4,7 @@ import (
 	"job-visualizer/pkg/database"
 	"job-visualizer/pkg/excel"
 	"job-visualizer/pkg/gui"
+	"job-visualizer/pkg/jobdata"
 	"job-visualizer/pkg/structs"
 
 	_ "modernc.org/sqlite"
@@ -12,7 +13,7 @@ import (
 func main() {
 	file := excel.OpenExcelFile()
 	rows := excel.GetAllRows(file)
-	allJobData := excel.ProcessRows(rows, []structs.JobData{})
+	allJobData := jobdata.ProcessRows(rows, []structs.JobData{})
 
 	jobsDatabase := database.CreateDatabase()
 	database.SetupDatabase(jobsDatabase)
