@@ -24,5 +24,8 @@ go.work.sum
 # env file
 .env
 
-# build file
+# build files
 job-visualizer
+
+#database files
+job_data.sqlite

@@ -81,7 +81,7 @@ func FilterLocation(job structs.JobData, filterInput string) bool {
 
 func FilterMinSalary(job structs.JobData, filter string) bool {
 	filterMatch := false
-	salary, _ := strconv.Atoi(job.Salary)
+	salary := job.Salary
 	minSalary, err := strconv.Atoi(filter)
 	checkErrorWarn(err)
 	if salary > minSalary {

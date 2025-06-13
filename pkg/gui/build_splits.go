@@ -58,7 +58,7 @@ func formatJobDetails(i int, window structs.GuiWindow) string {
 	jobData := *window.JobDataGui
 	job := jobData[i]
 	formattedDetails := fmt.Sprintf("Company Name:\n\t%s\n\nJob Title:\n\t%s\n\nLocation:\n\t%s\n\nDate Posted:"+
-		"\n\t%s\n\nSalary:\n\t%s\n\nWork From Home:\n\t%s\n\nQualifications:\n\t%s\n\nLinks:\n\t%s\n\n",
+		"\n\t%s\n\nSalary:\n\t%d\n\nWork From Home:\n\t%s\n\nQualifications:\n\t%s\n\nLinks:\n\t%s\n\n",
 		job.CompanyName, job.JobTitle, job.Location, job.DatePosted, job.Salary, job.WorkFromHome, job.Qualifications,
 		job.Links)
 	return formattedDetails
