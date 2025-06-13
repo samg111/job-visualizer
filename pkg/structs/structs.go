@@ -10,11 +10,10 @@ type JobData struct {
 	CompanyName    string
 	Description    string
 	DatePosted     string
-	Salary         string
+	Salary         int
 	WorkFromHome   string
 	Qualifications string
 	Links          string
-	JobId          string
 	Country        string
 	// LatLong        LatLong
 }

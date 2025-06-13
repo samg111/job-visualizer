@@ -29,7 +29,7 @@ func ProcessRows(rows [][]string, allJobData []structs.JobData) []structs.JobDat
 		job := structs.JobData{}
 		job.CompanyName = row[0]
 		job.DatePosted = row[1]
-		job.JobId = row[2]
+		// job.JobId = row[2]
 		job.Country = row[3]
 		job.Location = row[4]
 		job.Salary = calcSalary(row)
@@ -39,22 +39,21 @@ func ProcessRows(rows [][]string, allJobData []structs.JobData) []structs.JobDat
 	return allJobData
 }
 
-func calcSalary(row []string) string {
-	maxSalary := row[6]
-	minSalary := row[7]
+func calcSalary(row []string) int {
+	maxSalaryString := row[6]
+	minSalaryString := row[7]
 	hourlyOrYearly := row[8]
 
-	maxSalaryFloat, err := strconv.ParseFloat(maxSalary, 64)
+	maxSalary, err := strconv.ParseFloat(maxSalaryString, 64)
 	checkError(err)
-	maxSalaryInt := int(maxSalaryFloat)
-	minSalaryFloat, err := strconv.ParseFloat(minSalary, 64)
+	// maxSalaryInt := int(maxSalaryFloat)
+	minSalary, err := strconv.ParseFloat(minSalaryString, 64)
 	checkError(err)
-	minSalaryInt := int(minSalaryFloat)
-	salaryInt := (maxSalaryInt + minSalaryInt) / 2
+	// minSalaryInt := int(minSalaryFloat)
+	salary := int((maxSalary + minSalary) / 2)
 	if hourlyOrYearly == "hourly" {
-		salaryInt = salaryInt * 40 * 50
+		salary = salary * 40 * 50
 	}
-	salary := strconv.Itoa(salaryInt)
 	return salary
 
 }

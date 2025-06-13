@@ -15,7 +15,6 @@ func CreateDatabase() *sql.DB {
 	return db
 }
 
-// FIX: salary is type string but put in table type int
 func SetupDatabase(db *sql.DB) {
 	_, err := db.Exec(`CREATE TABLE IF NOT EXISTS job_data(
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -31,8 +30,6 @@ func SetupDatabase(db *sql.DB) {
 		country TEXT
 	);`)
 	checkError(err)
-	// _, err = db.Exec(`CREATE INDEX IF NOT EXISTS idx_job_id ON job_data(job_id);`)
-	// checkError(err)
 	_, err = db.Exec(`CREATE TABLE IF NOT EXISTS qualifications(
 		id INTEGER PRIMARY KEY,
 		qualifications TEXT NOT NULL,
@@ -53,7 +50,6 @@ func WriteToDatabase(db *sql.DB, allJobData []structs.JobData) {
 	insertQueryQualifications := `INSERT OR IGNORE INTO qualifications (id, qualifications) VALUES (?, ?);`
 	insertQueryLinks := `INSERT OR IGNORE INTO links (id, links) VALUES (?, ?);`
 	for _, job := range allJobData {
-		// fmt.Printf("Inserting: Qualifications=%q, Links=%q\n", job.Qualifications, job.Links)
 		result, err := db.Exec(insertQueryJobData, job.Location, job.JobTitle, job.CompanyName, job.Description, job.DatePosted,
 			job.Salary, job.WorkFromHome, job.Qualifications, job.Links, job.Country)
 		checkError(err)
