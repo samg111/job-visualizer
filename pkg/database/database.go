@@ -16,32 +16,8 @@ func CreateDatabase() *sql.DB {
 }
 
 func SetupDatabase(db *sql.DB) {
-	_, err := db.Exec(`CREATE TABLE IF NOT EXISTS job_data(
-		id INTEGER PRIMARY KEY AUTOINCREMENT,
-		location TEXT NOT NULL,
-		job_title TEXT NOT NULL,
-		company_name TEXT NOT NULL,
-		description TEXT,
-		date_posted TEXT NOT NULL,
-		salary INT,
-		work_from_home TEXT,
-		qualifications TEXT,
-		links TEXT,
-		country TEXT
-	);`)
-	checkError(err)
-	_, err = db.Exec(`CREATE TABLE IF NOT EXISTS qualifications(
-		id INTEGER PRIMARY KEY,
-		qualifications TEXT NOT NULL,
-		FOREIGN KEY (id) REFERENCES job_data(id)
-	);`)
-	checkError(err)
-	_, err = db.Exec(`CREATE TABLE IF NOT EXISTS links(
-		id INTEGER PRIMARY KEY,
-		links TEXT NOT NULL,
-		FOREIGN KEY (id) REFERENCES job_data(id)
-	);`)
-	checkError(err)
+	createMainTable(db)
+	createSecondaryTables(db)
 }
 
 func WriteToDatabase(db *sql.DB, allJobData []structs.JobData) {
@@ -60,6 +36,38 @@ func WriteToDatabase(db *sql.DB, allJobData []structs.JobData) {
 		_, err = db.Exec(insertQueryLinks, id, job.Links)
 		checkError(err)
 	}
+}
+
+func createMainTable(db *sql.DB) {
+	_, err := db.Exec(`CREATE TABLE IF NOT EXISTS job_data(
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		location TEXT NOT NULL,
+		job_title TEXT NOT NULL,
+		company_name TEXT NOT NULL,
+		description TEXT,
+		date_posted TEXT NOT NULL,
+		salary INT,
+		work_from_home TEXT,
+		qualifications TEXT,
+		links TEXT,
+		country TEXT
+	);`)
+	checkError(err)
+}
+
+func createSecondaryTables(db *sql.DB) {
+	_, err := db.Exec(`CREATE TABLE IF NOT EXISTS qualifications(
+		id INTEGER PRIMARY KEY,
+		qualifications TEXT NOT NULL,
+		FOREIGN KEY (id) REFERENCES job_data(id)
+	);`)
+	checkError(err)
+	_, err = db.Exec(`CREATE TABLE IF NOT EXISTS links(
+		id INTEGER PRIMARY KEY,
+		links TEXT NOT NULL,
+		FOREIGN KEY (id) REFERENCES job_data(id)
+	);`)
+	checkError(err)
 }
 
 func checkError(err error) {
