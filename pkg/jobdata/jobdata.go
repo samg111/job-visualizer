@@ -1,14 +1,14 @@
 package jobdata
 
 import (
-	"job-visualizer/pkg/structs"
+	"job-visualizer/pkg/shared"
 	"log"
 	"strconv"
 )
 
-func ProcessRows(rows [][]string, allJobData []structs.JobData) []structs.JobData {
+func ProcessRows(rows [][]string, allJobData []shared.JobData) []shared.JobData {
 	for _, row := range rows[1:] {
-		job := structs.JobData{}
+		job := shared.JobData{}
 		job.CompanyName = row[0]
 		job.DatePosted = row[1]
 		// job.JobId = row[2]

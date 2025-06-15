@@ -2,7 +2,7 @@ package database
 
 import (
 	"database/sql"
-	"job-visualizer/pkg/structs"
+	"job-visualizer/pkg/shared"
 	"log"
 	"os"
 )
@@ -20,7 +20,7 @@ func SetupDatabase(db *sql.DB) {
 	createSecondaryTables(db)
 }
 
-func WriteToDatabase(db *sql.DB, allJobData []structs.JobData) {
+func WriteToDatabase(db *sql.DB, allJobData []shared.JobData) {
 	insertQueryJobData := `INSERT INTO job_data (location, job_title, company_name, description, date_posted, salary,
 		work_from_home, qualifications, links, country) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`
 	insertQueryQualifications := `INSERT OR IGNORE INTO qualifications (id, qualifications) VALUES (?, ?);`

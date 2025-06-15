@@ -2,26 +2,26 @@ package gui
 
 import (
 	// "job-visualizer/pkg/gui"
-	"job-visualizer/pkg/structs"
+	"job-visualizer/pkg/shared"
 	"strconv"
 	"strings"
 	// "github.com/skratchdot/open-golang/open"
 )
 
-func GetJobData(jobs []structs.JobData) {
+func GetJobData(jobs []shared.JobData) {
 	// Filter jobs
 	jobs = filterJobs(jobs)
 	// jobs = assignLatLongs(jobs)
 	// geoplotMap := createGeoplotMap(jobs)
-	// window.Server = createHttpServer(geoplotMap)
-	Window.JobDataGui = &jobs
+	// shared.window.Server = createHttpServer(geoplotMap)
+	shared.Window.JobDataGui = &jobs
 }
 
-func filterJobs(jobs []structs.JobData) []structs.JobData {
-	filters := Window.Filters
+func filterJobs(jobs []shared.JobData) []shared.JobData {
+	filters := shared.Window.Filters
 	if filters.KeywordEntry != "" || filters.LocationEntry != "" || filters.MinSalaryEntry != "" ||
 		filters.WorkFromHomeEntry {
-		var filteredJobs []structs.JobData
+		var filteredJobs []shared.JobData
 		for _, job := range jobs {
 			filteredJobs = filterIndividualJob(job, filteredJobs)
 		}
@@ -30,8 +30,8 @@ func filterJobs(jobs []structs.JobData) []structs.JobData {
 	return jobs
 }
 
-func filterIndividualJob(job structs.JobData, filteredJobs []structs.JobData) []structs.JobData {
-	filters := Window.Filters
+func filterIndividualJob(job shared.JobData, filteredJobs []shared.JobData) []shared.JobData {
+	filters := shared.Window.Filters
 	filterMatch := true
 	if filters.KeywordEntry != "" {
 		//fmt.Printf("keyword entered: %s", filters.KeywordEntry)
@@ -55,7 +55,7 @@ func filterIndividualJob(job structs.JobData, filteredJobs []structs.JobData) []
 	return filteredJobs
 }
 
-func FilterKeyword(job structs.JobData, filterInput string) bool {
+func FilterKeyword(job shared.JobData, filterInput string) bool {
 	filterMatch := false
 	filter := strings.ToLower(filterInput)
 	jobTitle := strings.ToLower(job.JobTitle)
@@ -69,7 +69,7 @@ func FilterKeyword(job structs.JobData, filterInput string) bool {
 	return filterMatch
 }
 
-func FilterLocation(job structs.JobData, filterInput string) bool {
+func FilterLocation(job shared.JobData, filterInput string) bool {
 	filterMatch := false
 	jobLocation := strings.ToLower(job.Location)
 	filter := strings.ToLower(filterInput)
@@ -79,7 +79,7 @@ func FilterLocation(job structs.JobData, filterInput string) bool {
 	return filterMatch
 }
 
-func FilterMinSalary(job structs.JobData, filter string) bool {
+func FilterMinSalary(job shared.JobData, filter string) bool {
 	filterMatch := false
 	salary := job.Salary
 	minSalary, err := strconv.Atoi(filter)
@@ -90,7 +90,7 @@ func FilterMinSalary(job structs.JobData, filter string) bool {
 	return filterMatch
 }
 
-func FilterWorkFromHome(job structs.JobData) bool {
+func FilterWorkFromHome(job shared.JobData) bool {
 	filterMatch := false
 	if job.WorkFromHome == "Yes" {
 		filterMatch = true

@@ -1,8 +1,10 @@
-package structs
+package shared
 
 import (
 	"fyne.io/fyne/v2/widget"
 )
+
+var Window GuiWindow
 
 type JobData struct {
 	Location       string
