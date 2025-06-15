@@ -1,24 +1,10 @@
 # job-visualizer
 
-## instructions to run
-Open terminal and run these commands
-
-### build and run the application
-
-navigate to the `cmd/app` directory:
+## Instructions to build and run the application
+Open terminal in project root and run these commands
 
 ```bash
-cd cmd/app
-```
+sudo apt install libgl1-mesa-dev xorg-dev
 
-build the application:
-
-```bash
-go build -o job-visualizer
-```
-
-run the application:
-
-```bash
-go run main.go
+go run ./cmd/app
 ```
