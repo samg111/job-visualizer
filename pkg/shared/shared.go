@@ -1,8 +1,13 @@
-package structs
+package shared
 
 import (
+	"fmt"
+	"log"
+
 	"fyne.io/fyne/v2/widget"
 )
+
+var Window GuiWindow
 
 type JobData struct {
 	Location       string
@@ -35,4 +40,16 @@ type FilterEntries struct {
 	LocationEntry     string
 	MinSalaryEntry    string
 	WorkFromHomeEntry bool
+}
+
+func CheckError(err error) {
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func CheckErrorWarn(err error) {
+	if err != nil {
+		fmt.Println(err)
+	}
 }

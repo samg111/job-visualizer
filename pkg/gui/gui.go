@@ -1,21 +1,20 @@
 package gui
 
 import (
-	"fmt"
-	"job-visualizer/pkg/structs"
+	"job-visualizer/pkg/shared"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 )
 
-var Window structs.GuiWindow
+// var Window shared.GuiWindow
 
 type GuiData struct {
 	mainWindow fyne.Window
-	jobs       []structs.JobData
+	jobs       []shared.JobData
 }
 
-func CreateGui(jobs []structs.JobData) {
+func CreateGui(jobs []shared.JobData) {
 	mainWindow := createGuiWindow()
 	gui_data := creatGuiData(mainWindow, jobs)
 	buildWindow(gui_data)
@@ -29,16 +28,10 @@ func createGuiWindow() fyne.Window {
 	return Window
 }
 
-func creatGuiData(mainWindow fyne.Window, jobs []structs.JobData) GuiData {
+func creatGuiData(mainWindow fyne.Window, jobs []shared.JobData) GuiData {
 	gui_data := GuiData{
 		mainWindow: mainWindow,
 		jobs:       jobs,
 	}
 	return gui_data
-}
-
-func checkErrorWarn(err error) {
-	if err != nil {
-		fmt.Println(err)
-	}
 }
