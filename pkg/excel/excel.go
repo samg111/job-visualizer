@@ -1,25 +1,19 @@
 package excel
 
 import (
-	"log"
+	"job-visualizer/pkg/shared"
 
 	"github.com/xuri/excelize/v2"
 )
 
 func OpenExcelFile() *excelize.File {
 	file, err := excelize.OpenFile("JobData.xlsx")
-	checkError(err)
+	shared.CheckError(err)
 	return file
 }
 
 func GetAllRows(file *excelize.File) [][]string {
 	rows, err := file.GetRows("Jobs")
-	checkError(err)
+	shared.CheckError(err)
 	return rows
-}
-
-func checkError(err error) {
-	if err != nil {
-		log.Fatal(err)
-	}
 }

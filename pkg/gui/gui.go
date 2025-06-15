@@ -1,7 +1,6 @@
 package gui
 
 import (
-	"fmt"
 	"job-visualizer/pkg/shared"
 
 	"fyne.io/fyne/v2"
@@ -35,10 +34,4 @@ func creatGuiData(mainWindow fyne.Window, jobs []shared.JobData) GuiData {
 		jobs:       jobs,
 	}
 	return gui_data
-}
-
-func checkErrorWarn(err error) {
-	if err != nil {
-		fmt.Println(err)
-	}
 }
