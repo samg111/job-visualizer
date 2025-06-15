@@ -2,6 +2,7 @@ package gui
 
 import (
 	"fmt"
+	"job-visualizer/pkg/jobdata"
 	"job-visualizer/pkg/shared"
 
 	"fyne.io/fyne/v2"
@@ -66,7 +67,7 @@ func formatJobDetails(i int, window shared.GuiWindow) string {
 
 func createDataButton(jobs []shared.JobData) *widget.Button {
 	dataButton := widget.NewButton("Click to filter the jobs", func() {
-		GetJobData(jobs)
+		jobdata.GetJobData(jobs)
 		// openWebpage()
 	})
 	return dataButton

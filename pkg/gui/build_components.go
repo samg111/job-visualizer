@@ -1,6 +1,7 @@
 package gui
 
 import (
+	"job-visualizer/pkg/jobdata"
 	"job-visualizer/pkg/shared"
 
 	"fyne.io/fyne/v2"
@@ -12,7 +13,7 @@ func buildTopLeftComponents(jobs []shared.JobData) *fyne.Container {
 	mapButton := widget.NewButton("Click to open/refresh map", func() {})
 	getJobsButton := widget.NewButton("Click get the unfiltered jobs or refresh list of jobs/filters to original", func() {
 		removeActiveFilters()
-		GetJobData(jobs)
+		jobdata.GetJobData(jobs)
 		// openWebpage()
 		refreshEntries()
 	})
