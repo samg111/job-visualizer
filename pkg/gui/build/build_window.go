@@ -1,12 +1,14 @@
-package gui
+package build
 
 import (
+	"job-visualizer/pkg/shared"
+
 	"fyne.io/fyne/v2/container"
 )
 
-func buildWindow(gui_data GuiData) {
-	mainWindow := gui_data.mainWindow
-	jobs := gui_data.jobs
+func BuildWindow(gui_data shared.GuiData) {
+	mainWindow := gui_data.MainWindow
+	jobs := gui_data.Jobs
 
 	leftSplit := buildLeftSplit(jobs)
 	rightSplit := buildRightSplit()

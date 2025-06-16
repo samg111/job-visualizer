@@ -1,4 +1,4 @@
-package gui
+package build
 
 import (
 	"job-visualizer/pkg/jobdata"

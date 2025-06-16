@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 
+	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/widget"
 )
 
@@ -33,6 +34,11 @@ type GuiWindow struct {
 	SelectedJobDetails   string
 	Filters              FilterEntries
 	// Server               *http.Server
+}
+
+type GuiData struct {
+	MainWindow fyne.Window
+	Jobs       []JobData
 }
 
 type FilterEntries struct {
