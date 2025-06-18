@@ -9,6 +9,7 @@ import (
 )
 
 var Window GuiWindow
+var CachedLocations map[string]LatLong
 
 type JobData struct {
 	Location       string
@@ -21,7 +22,11 @@ type JobData struct {
 	Qualifications string
 	Links          string
 	Country        string
-	// LatLong        LatLong
+	LatLong        LatLong
+}
+type LatLong struct {
+	Latitude  float64
+	Longitude float64
 }
 
 type GuiWindow struct {
@@ -46,6 +51,11 @@ type FilterEntries struct {
 	LocationEntry     string
 	MinSalaryEntry    string
 	WorkFromHomeEntry bool
+}
+
+type JsonLocation struct {
+	Lat string `json:"lat"`
+	Lon string `json:"lon"`
 }
 
 func CheckError(err error) {
