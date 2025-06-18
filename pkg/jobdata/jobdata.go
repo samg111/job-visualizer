@@ -8,6 +8,9 @@ import (
 
 func ProcessRows(rows [][]string, allJobData []shared.JobData) []shared.JobData {
 	for _, row := range rows[1:] {
+		if len(row) < 10 {
+			continue
+		}
 		job := shared.JobData{}
 		job.CompanyName = row[0]
 		job.DatePosted = row[1]

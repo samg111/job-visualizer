@@ -3,6 +3,7 @@ package mapping
 import (
 	"encoding/json"
 	"fmt"
+	"os"
 	"regexp"
 	"strings"
 
@@ -14,11 +15,32 @@ import (
 )
 
 func ProcessLatLongs(jobs []shared.JobData) []shared.JobData {
+	cacheFilename := "cached_locations.json"
 	shared.CachedLocations = make(map[string]shared.LatLong)
+	loadCacheFromFile(cacheFilename)
 	jobs = standardizeLocations(jobs)
 	getLatLongs(jobs)
 	jobs = assignLatLongs(jobs)
+	saveCacheToFile(cacheFilename)
 	return jobs
+}
+
+func saveCacheToFile(filename string) {
+	file, err := os.Create(filename)
+	shared.CheckErrorWarn(err)
+	defer file.Close()
+	enc := json.NewEncoder(file)
+	err = enc.Encode(shared.CachedLocations)
+	shared.CheckErrorWarn(err)
+}
+
+func loadCacheFromFile(filename string) {
+	file, err := os.Open(filename)
+	shared.CheckErrorWarn(err)
+	defer file.Close()
+	dec := json.NewDecoder(file)
+	err = dec.Decode(&shared.CachedLocations)
+	shared.CheckErrorWarn(err)
 }
 
 func standardizeLocations(jobs []shared.JobData) []shared.JobData {
