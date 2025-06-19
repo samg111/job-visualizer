@@ -16,30 +16,21 @@ import (
 
 func ProcessLatLongs(jobs []shared.JobData) []shared.JobData {
 	cacheFilename := "cached_locations.json"
-	shared.CachedLocations = make(map[string]shared.LatLong)
-	loadCacheFromFile(cacheFilename)
+	cachedLocations := make(map[string]shared.LatLong)
+	loadCacheFromFile(cacheFilename, cachedLocations)
 	jobs = standardizeLocations(jobs)
-	getLatLongs(jobs)
-	jobs = assignLatLongs(jobs)
-	saveCacheToFile(cacheFilename)
+	getLatLongs(jobs, cachedLocations)
+	jobs = assignLatLongs(jobs, cachedLocations)
+	saveCacheToFile(cacheFilename, cachedLocations)
 	return jobs
 }
 
-func saveCacheToFile(filename string) {
-	file, err := os.Create(filename)
-	shared.CheckErrorWarn(err)
-	defer file.Close()
-	enc := json.NewEncoder(file)
-	err = enc.Encode(shared.CachedLocations)
-	shared.CheckErrorWarn(err)
-}
-
-func loadCacheFromFile(filename string) {
+func loadCacheFromFile(filename string, cachedLocations map[string]shared.LatLong) {
 	file, err := os.Open(filename)
 	shared.CheckErrorWarn(err)
 	defer file.Close()
 	dec := json.NewDecoder(file)
-	err = dec.Decode(&shared.CachedLocations)
+	err = dec.Decode(&cachedLocations)
 	shared.CheckErrorWarn(err)
 }
 
@@ -57,10 +48,10 @@ func standardizeLocations(jobs []shared.JobData) []shared.JobData {
 	return jobs
 }
 
-func getLatLongs(jobs []shared.JobData) {
+func getLatLongs(jobs []shared.JobData, cachedLocations map[string]shared.LatLong) {
 	for i, job := range jobs {
 		fmt.Printf("\rcaching job locations (%d/%d)", i+1, len(jobs))
-		if _, ok := shared.CachedLocations[job.Location]; ok {
+		if _, ok := cachedLocations[job.Location]; ok {
 		} else {
 			responseBody := getNominatimResponse(job.Location)
 
@@ -68,20 +59,28 @@ func getLatLongs(jobs []shared.JobData) {
 			err := json.Unmarshal(responseBody, &locations)
 			shared.CheckErrorWarn(err)
 			if len(locations) > 0 {
-				addLocationToCache(job.Location, locations)
-
+				addLocationToCache(job.Location, locations, cachedLocations)
 			}
 		}
 	}
 }
 
-func assignLatLongs(jobs []shared.JobData) []shared.JobData {
+func assignLatLongs(jobs []shared.JobData, cachedLocations map[string]shared.LatLong) []shared.JobData {
 	for i, job := range jobs {
-		if coordinates, ok := shared.CachedLocations[job.Location]; ok {
+		if coordinates, ok := cachedLocations[job.Location]; ok {
 			jobs[i].LatLong = coordinates
 		}
 	}
 	return jobs
+}
+
+func saveCacheToFile(filename string, cachedLocations map[string]shared.LatLong) {
+	file, err := os.Create(filename)
+	shared.CheckErrorWarn(err)
+	defer file.Close()
+	enc := json.NewEncoder(file)
+	err = enc.Encode(cachedLocations)
+	shared.CheckErrorWarn(err)
 }
 
 func getNominatimResponse(location string) []byte {
@@ -98,12 +97,12 @@ func getNominatimResponse(location string) []byte {
 	return responseBody
 }
 
-func addLocationToCache(jobLocation string, locations []shared.JsonLocation) {
+func addLocationToCache(jobLocation string, locations []shared.JsonLocation, cachedLocations map[string]shared.LatLong) {
 	latitude, err := strconv.ParseFloat(locations[0].Lat, 64)
 	shared.CheckErrorWarn(err)
 	longitude, err := strconv.ParseFloat(locations[0].Lon, 64)
 	shared.CheckErrorWarn(err)
-	shared.CachedLocations[jobLocation] = shared.LatLong{
+	cachedLocations[jobLocation] = shared.LatLong{
 		Latitude:  latitude,
 		Longitude: longitude,
 	}

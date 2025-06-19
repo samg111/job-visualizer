@@ -9,7 +9,6 @@ import (
 )
 
 var Window GuiWindow
-var CachedLocations map[string]LatLong
 
 type JobData struct {
 	Location       string
