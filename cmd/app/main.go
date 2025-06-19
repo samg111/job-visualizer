@@ -5,7 +5,7 @@ import (
 	"job-visualizer/pkg/excel"
 	"job-visualizer/pkg/headless"
 	"job-visualizer/pkg/jobdata"
-	mapping "job-visualizer/pkg/map"
+	"job-visualizer/pkg/mapping"
 	"job-visualizer/pkg/shared"
 
 	_ "modernc.org/sqlite"
@@ -19,7 +19,8 @@ func main() {
 	file := excel.OpenExcelFile()
 	rows := excel.GetAllRows(file)
 	allJobData := jobdata.ProcessRows(rows, []shared.JobData{})
-	allJobData = mapping.ProcessLatLongs(allJobData)
+	// allJobData = mapping.ProcessLatLongs(allJobData)
+	allJobData = mapping.GenerateMap(allJobData)
 
 	jobsDatabase := database.CreateDatabase()
 	database.SetupDatabase(jobsDatabase)
