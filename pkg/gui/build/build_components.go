@@ -1,7 +1,7 @@
 package build
 
 import (
-	"job-visualizer/pkg/jobdata"
+	"job-visualizer/pkg/gui/buttons"
 	"job-visualizer/pkg/shared"
 
 	"fyne.io/fyne/v2"
@@ -9,15 +9,16 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
+var Jobs []shared.JobData
+
 func buildTopLeftComponents(jobs []shared.JobData) *fyne.Container {
-	mapButton := widget.NewButton("Click to open/refresh map", func() {})
-	getJobsButton := widget.NewButton("Click get the unfiltered jobs or refresh list of jobs/filters to original", func() {
-		removeActiveFilters()
-		jobdata.GetJobData(jobs)
-		// openWebpage()
-		refreshEntries()
+	getJobsButton := widget.NewButton("Click to refresh list of jobs to original", func() {
+		buttons.HandleJobRefresh(jobs)
 	})
-	displayPane := container.NewVBox(getJobsButton, mapButton)
+	// mapButton := widget.NewButton("Click to open map", func() {
+	// 	buttons.HandleJobRefresh(jobs)
+	// })
+	displayPane := container.NewVBox(getJobsButton)
 	return displayPane
 }
 
@@ -28,22 +29,6 @@ func buildFilterComponents() (*fyne.Container, *widget.Check) {
 	filterContainer := container.NewVBox(keywordContainer, locationContainer, minSalaryContainer)
 	remoteCheckbox := buildRemoteCheckbox()
 	return filterContainer, remoteCheckbox
-}
-
-func removeActiveFilters() {
-	shared.Window.Filters.KeywordEntry = ""
-	shared.Window.Filters.LocationEntry = ""
-	shared.Window.Filters.MinSalaryEntry = ""
-	shared.Window.Filters.WorkFromHomeEntry = false
-}
-
-func refreshEntries() {
-	shared.Window.KeywordEntryWidget.SetText("")
-	shared.Window.LocationEntryWidget.SetText("")
-	shared.Window.MinSalaryEntryWidget.SetText("")
-	shared.Window.KeywordEntryWidget.SetPlaceHolder("Enter keyword filter here")
-	shared.Window.LocationEntryWidget.SetPlaceHolder("Enter location filter here")
-	shared.Window.MinSalaryEntryWidget.SetPlaceHolder("Enter minimum salary filter here")
 }
 
 func buildKeywordContainer() *fyne.Container {

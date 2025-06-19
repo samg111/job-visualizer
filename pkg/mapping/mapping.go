@@ -2,7 +2,6 @@ package mapping
 
 import (
 	"fmt"
-	"job-visualizer/pkg/jobdata/processing"
 	"job-visualizer/pkg/shared"
 	"net/http"
 
@@ -10,12 +9,22 @@ import (
 	"github.com/skratchdot/open-golang/open"
 )
 
-// var serverCount int
+var geoplotMap *geoplot.Map
+
+func init() {
+	http.Handle("/map", http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
+		if geoplotMap != nil {
+			err := geoplot.ServeMap(writer, request, geoplotMap)
+			shared.CheckErrorWarn(err)
+		} else {
+			http.Error(writer, "Map not ready", http.StatusServiceUnavailable)
+		}
+	}))
+}
 
 func GenerateMap(jobs []shared.JobData) []shared.JobData {
-	jobs = processing.ProcessLatLongs(jobs)
-	geoplotMap := createGeoplotMap(jobs)
-	shared.Window.Server = createHttpServer(geoplotMap)
+	geoplotMap = createGeoplotMap(jobs)
+	shared.Window.Server = createHttpServer()
 	openWebpage()
 	return jobs
 }
@@ -59,18 +68,12 @@ func createGeoplotMap(jobs []shared.JobData) *geoplot.Map {
 	return geoplotMap
 }
 
-func createHttpServer(geoplotMap *geoplot.Map) *http.Server {
+func createHttpServer() *http.Server {
 	if shared.Window.Server != nil {
 		err := shared.Window.Server.Close()
 		shared.CheckErrorWarn(err)
 	}
-	// serverCount++
 	server := &http.Server{Addr: ":8080"}
-	// pattern := fmt.Sprintf("/%d", serverCount)
-	http.Handle("/map", http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
-		err := geoplot.ServeMap(writer, request, geoplotMap)
-		shared.CheckErrorWarn(err)
-	}))
 	go func() {
 		err := server.ListenAndServe()
 		shared.CheckErrorWarn(err)
@@ -79,7 +82,6 @@ func createHttpServer(geoplotMap *geoplot.Map) *http.Server {
 }
 
 func openWebpage() {
-	// url := fmt.Sprintf("http://localhost:8080/%d", serverCount)
 	url := "http://localhost:8080/map"
 	err := open.Run(url)
 	shared.CheckErrorWarn(err)
