@@ -1,14 +1,32 @@
 package gui
 
 import (
+	"fmt"
 	"job-visualizer/pkg/gui/build"
 	"job-visualizer/pkg/shared"
+	"strings"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 )
 
-func CreateGui(jobs []shared.JobData) {
+func RunGUIorHeadless(headless bool, allJobData []shared.JobData) {
+	if headless {
+		for i, job := range allJobData {
+			if i%100 == 0 {
+				fmt.Printf("%-4s | %-25s | %-55s | %-25s\n",
+					"#", "Location", "Job Title", "Company Name")
+				fmt.Println(strings.Repeat("-", 120))
+			}
+			fmt.Printf("%-4d | %-25s | %-55s | %-25s\n",
+				i+1, job.Location, job.JobTitle, job.CompanyName)
+		}
+	} else {
+		createGui(allJobData)
+	}
+}
+
+func createGui(jobs []shared.JobData) {
 	mainWindow := createGuiWindow()
 	gui_data := creatGuiData(mainWindow, jobs)
 	build.BuildWindow(gui_data)
