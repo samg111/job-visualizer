@@ -6,6 +6,7 @@ import (
 	"job-visualizer/pkg/gui"
 	"job-visualizer/pkg/headless"
 	"job-visualizer/pkg/jobdata"
+	"job-visualizer/pkg/jobdata/processing"
 	"job-visualizer/pkg/mapping"
 	"job-visualizer/pkg/shared"
 
@@ -18,6 +19,7 @@ func main() {
 	file := excel.OpenExcelFile()
 	rows := excel.GetAllRows(file)
 	allJobData := jobdata.ProcessRows(rows, []shared.JobData{})
+	allJobData = processing.ProcessLatLongs(allJobData)
 	allJobData = mapping.GenerateMap(allJobData)
 
 	jobsDatabase := database.CreateDatabase()

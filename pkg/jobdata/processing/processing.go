@@ -63,6 +63,7 @@ func getLatLongs(jobs []shared.JobData, cachedLocations map[string]shared.LatLon
 			}
 		}
 	}
+	fmt.Println()
 }
 
 func assignLatLongs(jobs []shared.JobData, cachedLocations map[string]shared.LatLong) []shared.JobData {

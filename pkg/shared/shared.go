@@ -3,6 +3,7 @@ package shared
 import (
 	"fmt"
 	"log"
+	"net/http"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/widget"
@@ -37,7 +38,7 @@ type GuiWindow struct {
 	JobDataGui           *[]JobData
 	SelectedJobDetails   string
 	Filters              FilterEntries
-	// Server               *http.Server
+	Server               *http.Server
 }
 
 type GuiData struct {
