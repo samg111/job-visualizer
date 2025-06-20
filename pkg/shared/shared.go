@@ -12,17 +12,18 @@ import (
 var Window GuiWindow
 
 type JobData struct {
-	Location       string
-	JobTitle       string
-	CompanyName    string
-	Description    string
-	DatePosted     string
-	Salary         int
-	WorkFromHome   string
-	Qualifications string
-	Links          string
-	Country        string
-	LatLong        LatLong
+	Location             string
+	StandardizedLocation string
+	JobTitle             string
+	CompanyName          string
+	Description          string
+	DatePosted           string
+	Salary               int
+	WorkFromHome         string
+	Qualifications       string
+	Links                string
+	Country              string
+	LatLong              LatLong
 }
 type LatLong struct {
 	Latitude  float64

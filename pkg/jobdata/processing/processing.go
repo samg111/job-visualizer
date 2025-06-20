@@ -19,7 +19,7 @@ func ProcessLatLongs(jobs []shared.JobData) []shared.JobData {
 	cachedLocations := make(map[string]shared.LatLong)
 	loadCacheFromFile(cacheFilename, cachedLocations)
 	jobs = standardizeLocations(jobs)
-	getLatLongs(jobs, cachedLocations)
+	cacheLatLongs(jobs, cachedLocations)
 	jobs = assignLatLongs(jobs, cachedLocations)
 	saveCacheToFile(cacheFilename, cachedLocations)
 	return jobs
@@ -43,23 +43,23 @@ func standardizeLocations(jobs []shared.JobData) []shared.JobData {
 		location = reNumbers.ReplaceAllString(location, "")
 		location = rePunctuation.ReplaceAllString(location, "")
 		location = strings.Join(strings.Fields(location), " ")
-		jobs[i].Location = location
+		jobs[i].StandardizedLocation = location
 	}
 	return jobs
 }
 
-func getLatLongs(jobs []shared.JobData, cachedLocations map[string]shared.LatLong) {
+func cacheLatLongs(jobs []shared.JobData, cachedLocations map[string]shared.LatLong) {
 	for i, job := range jobs {
 		fmt.Printf("\rcaching job locations (%d/%d)", i+1, len(jobs))
-		if _, ok := cachedLocations[job.Location]; ok {
+		if _, ok := cachedLocations[job.StandardizedLocation]; ok {
 		} else {
-			responseBody := getNominatimResponse(job.Location)
+			responseBody := getNominatimResponse(job.StandardizedLocation)
 
 			var locations []shared.JsonLocation
 			err := json.Unmarshal(responseBody, &locations)
 			shared.CheckErrorWarn(err)
 			if len(locations) > 0 {
-				addLocationToCache(job.Location, locations, cachedLocations)
+				addLocationToCache(job.StandardizedLocation, locations, cachedLocations)
 			}
 		}
 	}
@@ -68,7 +68,7 @@ func getLatLongs(jobs []shared.JobData, cachedLocations map[string]shared.LatLon
 
 func assignLatLongs(jobs []shared.JobData, cachedLocations map[string]shared.LatLong) []shared.JobData {
 	for i, job := range jobs {
-		if coordinates, ok := cachedLocations[job.Location]; ok {
+		if coordinates, ok := cachedLocations[job.StandardizedLocation]; ok {
 			jobs[i].LatLong = coordinates
 		}
 	}

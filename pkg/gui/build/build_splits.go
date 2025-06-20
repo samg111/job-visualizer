@@ -15,21 +15,24 @@ func buildLeftSplit(jobs []shared.JobData) *container.Split {
 	topContainer := buildTopLeftComponents(jobs)
 	filterContainer, remoteCheckbox := buildFilterComponents()
 	dataButton := createDataButton(jobs)
-	topPane := container.NewVBox(topContainer, filterContainer, remoteCheckbox, dataButton)
+	detailsButton := widget.NewButton("Click to display selected job details", func() {
+		shared.Window.DetailsWidget.SetText(shared.Window.SelectedJobDetails)
+	})
+	topPane := container.NewVBox(topContainer, filterContainer, remoteCheckbox, dataButton, detailsButton)
 	bottomPane := container.NewScroll(shared.Window.ListWidget)
 	leftSplit := container.NewVSplit(topPane, bottomPane)
 	return leftSplit
 }
 
 func buildRightSplit() *fyne.Container {
-	detailsButton := widget.NewButton("Click to display selected job details", func() {
-		shared.Window.DetailsWidget.SetText(shared.Window.SelectedJobDetails)
-	})
+	// detailsButton := widget.NewButton("Click to display selected job details", func() {
+	// 	shared.Window.DetailsWidget.SetText(shared.Window.SelectedJobDetails)
+	// })
 	detailsLabel := widget.NewLabelWithStyle("Select a job to display details", fyne.TextAlignLeading,
 		fyne.TextStyle{Bold: false, Italic: false})
 	detailsLabel.Wrapping = fyne.TextWrapWord
 	shared.Window.DetailsWidget = detailsLabel
-	rightPane := container.NewVBox(detailsButton, shared.Window.DetailsWidget)
+	rightPane := container.NewVBox(shared.Window.DetailsWidget)
 	return rightPane
 }
 
