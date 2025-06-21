@@ -29,3 +29,6 @@ job-visualizer
 
 #database files
 job_data.sqlite
+
+#cache files
+cached_locations.json
