@@ -12,14 +12,43 @@ import (
 var geoplotMap *geoplot.Map
 
 func init() {
-	http.Handle("/map", http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
-		if geoplotMap != nil {
-			err := geoplot.ServeMap(writer, request, geoplotMap)
-			shared.CheckErrorWarn(err)
-		} else {
-			http.Error(writer, "Map not ready", http.StatusServiceUnavailable)
-		}
-	}))
+	http.HandleFunc("/map", mapPage)
+	http.HandleFunc("/innerMap", innerMap)
+	// http.Handle("/map", http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
+	// 	if geoplotMap != nil {
+	// 		err := geoplot.ServeMap(writer, request, geoplotMap)
+	// 		shared.CheckErrorWarn(err)
+	// 	} else {
+	// 		http.Error(writer, "Map not ready", http.StatusServiceUnavailable)
+	// 	}
+	// }))
+}
+
+func mapPage(writer http.ResponseWriter, request *http.Request) {
+	if geoplotMap != nil {
+		writer.Header().Set("Content-Type", "text/html")
+		fmt.Fprint(writer, `
+            <html>
+                <head>
+                    <title>job-visualizer Map</title>
+                </head>
+                <body style="margin:0;padding:0;">
+                    <iframe src="/innerMap" style="width:100vw;height:100vh;border:none;"></iframe>
+                </body>
+            </html>
+        `)
+	} else {
+		http.Error(writer, "Map not ready", http.StatusServiceUnavailable)
+	}
+}
+
+func innerMap(writer http.ResponseWriter, request *http.Request) {
+	if geoplotMap != nil {
+		err := geoplot.ServeMap(writer, request, geoplotMap)
+		shared.CheckErrorWarn(err)
+	} else {
+		http.Error(writer, "Map not ready", http.StatusServiceUnavailable)
+	}
 }
 
 func GenerateMap(jobs []shared.JobData) []shared.JobData {
