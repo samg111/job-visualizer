@@ -14,14 +14,6 @@ var geoplotMap *geoplot.Map
 func init() {
 	http.HandleFunc("/map", mapPage)
 	http.HandleFunc("/innerMap", innerMap)
-	// http.Handle("/map", http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
-	// 	if geoplotMap != nil {
-	// 		err := geoplot.ServeMap(writer, request, geoplotMap)
-	// 		shared.CheckErrorWarn(err)
-	// 	} else {
-	// 		http.Error(writer, "Map not ready", http.StatusServiceUnavailable)
-	// 	}
-	// }))
 }
 
 func mapPage(writer http.ResponseWriter, request *http.Request) {
@@ -59,6 +51,47 @@ func GenerateMap(jobs []shared.JobData) []shared.JobData {
 }
 
 func createGeoplotMap(jobs []shared.JobData) *geoplot.Map {
+	// boston := &geoplot.LatLng{
+	// 	Latitude:  42.361145,
+	// 	Longitude: -71.057083,
+	// }
+	// geoplotMap := &geoplot.Map{
+	// 	Center: boston,
+	// 	Zoom:   7,
+	// 	Area: &geoplot.Area{
+	// 		From: boston.Offset(-0.1, -0.1),
+	// 		To:   boston.Offset(0.2, 0.2),
+	// 	},
+	// }
+	geoplotMap := createBaseMap()
+	createMarkers(jobs, geoplotMap)
+	// commonLocations := make(map[shared.LatLong][]shared.JobData)
+	// for _, job := range jobs {
+	// 	if _, ok := commonLocations[job.LatLong]; ok {
+	// 		commonLocations[job.LatLong] = append(commonLocations[job.LatLong], job)
+	// 	} else {
+	// 		commonLocations[job.LatLong] = append(make([]shared.JobData, 0), job)
+	// 	}
+	// }
+	// for key, value := range commonLocations {
+	// 	latitude := key.Latitude
+	// 	longitude := key.Longitude
+	// 	coordinates := &geoplot.LatLng{
+	// 		Latitude:  latitude,
+	// 		Longitude: longitude,
+	// 	}
+	// 	icon := geoplot.ColorIcon(255, 255, 0)
+	// 	geoplotMap.AddMarker(&geoplot.Marker{
+	// 		LatLng:  coordinates,
+	// 		Popup:   fmt.Sprintf("clicked description: %d", len(value)), //clicked description
+	// 		Tooltip: fmt.Sprintf("hoverword: %d", len(value)),           //hover word
+	// 		Icon:    icon,
+	// 	})
+	// }
+	return geoplotMap
+}
+
+func createBaseMap() *geoplot.Map {
 	boston := &geoplot.LatLng{
 		Latitude:  42.361145,
 		Longitude: -71.057083,
@@ -71,12 +104,16 @@ func createGeoplotMap(jobs []shared.JobData) *geoplot.Map {
 			To:   boston.Offset(0.2, 0.2),
 		},
 	}
-	commonLocations := make(map[shared.LatLong]string)
+	return geoplotMap
+}
+
+func createMarkers(jobs []shared.JobData, geoplotMap *geoplot.Map) {
+	commonLocations := make(map[shared.LatLong][]shared.JobData)
 	for _, job := range jobs {
 		if _, ok := commonLocations[job.LatLong]; ok {
-			commonLocations[job.LatLong] = commonLocations[job.LatLong] + fmt.Sprintf("%s\n", job.CompanyName)
+			commonLocations[job.LatLong] = append(commonLocations[job.LatLong], job)
 		} else {
-			commonLocations[job.LatLong] = fmt.Sprintf("%s\n", job.CompanyName)
+			commonLocations[job.LatLong] = append(make([]shared.JobData, 0), job)
 		}
 	}
 	for key, value := range commonLocations {
@@ -89,12 +126,11 @@ func createGeoplotMap(jobs []shared.JobData) *geoplot.Map {
 		icon := geoplot.ColorIcon(255, 255, 0)
 		geoplotMap.AddMarker(&geoplot.Marker{
 			LatLng:  coordinates,
-			Popup:   value, //clicked description
-			Tooltip: value, //hover word
+			Popup:   fmt.Sprintf("clicked description: %d", len(value)),
+			Tooltip: fmt.Sprintf("hoverword: %d", len(value)),
 			Icon:    icon,
 		})
 	}
-	return geoplotMap
 }
 
 func createHttpServer() *http.Server {
