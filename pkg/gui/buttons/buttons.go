@@ -4,16 +4,32 @@ import (
 	"job-visualizer/pkg/jobdata"
 	"job-visualizer/pkg/mapping"
 	"job-visualizer/pkg/shared"
+
+	"fyne.io/fyne/v2/widget"
 )
 
-func HandleJobRefresh(jobs []shared.JobData) {
+func BuildMainButtons(jobs []shared.JobData) (*widget.Button, *widget.Button, *widget.Button) {
+	refreshButton := widget.NewButton("Click to refresh list of jobs to original", func() {
+		handleJobRefresh(jobs)
+	})
+	filterButton := widget.NewButton("Click to filter the jobs", func() {
+		handleJobFilter(jobs)
+	})
+	selectedDetailsButton := widget.NewButton("Click to display selected job details", func() {
+		shared.Window.DetailsWidget.SetText(shared.Window.SelectedJobDetails)
+	})
+
+	return refreshButton, filterButton, selectedDetailsButton
+}
+
+func handleJobRefresh(jobs []shared.JobData) {
 	removeActiveFilters()
 	jobs = jobdata.GetJobData(jobs)
 	mapping.GenerateMap(jobs)
 	refreshEntries()
 }
 
-func HandleJobFilter(jobs []shared.JobData) {
+func handleJobFilter(jobs []shared.JobData) {
 	jobs = jobdata.GetJobData(jobs)
 	mapping.GenerateMap(jobs)
 }

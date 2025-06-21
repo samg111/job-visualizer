@@ -10,24 +10,28 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
+func buildMainWindow(jobs []shared.JobData) *container.Split {
+	leftSplit := buildLeftSplit(jobs)
+	rightSplit := buildRightSplit()
+	contentPane := container.NewHSplit(leftSplit, rightSplit)
+
+	return contentPane
+}
+
 func buildLeftSplit(jobs []shared.JobData) *container.Split {
 	createJobList()
-	topContainer := buildTopLeftComponents(jobs)
+	refreshButton, filterButton, selectedDetailsButton := buttons.BuildMainButtons(jobs)
+
 	filterContainer, remoteCheckbox := buildFilterComponents()
-	dataButton := createDataButton(jobs)
-	detailsButton := widget.NewButton("Click to display selected job details", func() {
-		shared.Window.DetailsWidget.SetText(shared.Window.SelectedJobDetails)
-	})
-	topPane := container.NewVBox(topContainer, filterContainer, remoteCheckbox, dataButton, detailsButton)
-	bottomPane := container.NewScroll(shared.Window.ListWidget)
-	leftSplit := container.NewVSplit(topPane, bottomPane)
+
+	jobScroll := container.NewScroll(shared.Window.ListWidget)
+	filterVBox := container.NewVBox(refreshButton, filterContainer, remoteCheckbox, filterButton)
+	selectedDetailsContainer := container.NewBorder(nil, selectedDetailsButton, nil, nil, jobScroll)
+	leftSplit := container.NewVSplit(filterVBox, selectedDetailsContainer)
 	return leftSplit
 }
 
 func buildRightSplit() *fyne.Container {
-	// detailsButton := widget.NewButton("Click to display selected job details", func() {
-	// 	shared.Window.DetailsWidget.SetText(shared.Window.SelectedJobDetails)
-	// })
 	detailsLabel := widget.NewLabelWithStyle("Select a job to display details", fyne.TextAlignLeading,
 		fyne.TextStyle{Bold: false, Italic: false})
 	detailsLabel.Wrapping = fyne.TextWrapWord
@@ -66,11 +70,4 @@ func formatJobDetails(i int, window shared.GuiWindow) string {
 		job.CompanyName, job.JobTitle, job.Location, job.DatePosted, job.Salary, job.WorkFromHome, job.Qualifications,
 		job.Links)
 	return formattedDetails
-}
-
-func createDataButton(jobs []shared.JobData) *widget.Button {
-	dataButton := widget.NewButton("Click to filter the jobs", func() {
-		buttons.HandleJobFilter(jobs)
-	})
-	return dataButton
 }

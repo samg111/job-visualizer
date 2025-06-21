@@ -1,26 +1,12 @@
 package build
 
 import (
-	"job-visualizer/pkg/gui/buttons"
 	"job-visualizer/pkg/shared"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/widget"
 )
-
-var Jobs []shared.JobData
-
-func buildTopLeftComponents(jobs []shared.JobData) *fyne.Container {
-	getJobsButton := widget.NewButton("Click to refresh list of jobs to original", func() {
-		buttons.HandleJobRefresh(jobs)
-	})
-	// mapButton := widget.NewButton("Click to open map", func() {
-	// 	buttons.HandleJobRefresh(jobs)
-	// })
-	displayPane := container.NewVBox(getJobsButton)
-	return displayPane
-}
 
 func buildFilterComponents() (*fyne.Container, *widget.Check) {
 	keywordContainer := buildKeywordContainer()
