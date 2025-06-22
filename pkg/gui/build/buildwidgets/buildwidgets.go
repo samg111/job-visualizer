@@ -5,6 +5,7 @@ import (
 	"job-visualizer/pkg/mapping"
 	"job-visualizer/pkg/shared"
 
+	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/widget"
 )
 
@@ -20,6 +21,11 @@ func BuildMainButtons(jobs []shared.JobData) (*widget.Button, *widget.Button, *w
 	})
 
 	return refreshButton, filterButton, selectedDetailsButton
+}
+
+func BuildLabel(text string, boldBool bool, italicBool bool) *widget.Label {
+	return widget.NewLabelWithStyle(text, fyne.TextAlignLeading,
+		fyne.TextStyle{Bold: boldBool, Italic: italicBool})
 }
 
 func BuildRemoteCheckbox() *widget.Check {
