@@ -23,6 +23,13 @@ func BuildMainButtons(jobs []shared.JobData) (*widget.Button, *widget.Button, *w
 	return refreshButton, filterButton, selectedDetailsButton
 }
 
+func BuildStartButton(startWindow fyne.Window, mainWindow fyne.Window) *widget.Button {
+	return widget.NewButton("Start Application", func() {
+		startWindow.Hide()
+		mainWindow.Show()
+	})
+}
+
 func BuildLabel(text string, boldBool bool, italicBool bool) *widget.Label {
 	return widget.NewLabelWithStyle(text, fyne.TextAlignLeading,
 		fyne.TextStyle{Bold: boldBool, Italic: italicBool})

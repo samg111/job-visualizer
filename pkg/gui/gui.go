@@ -22,20 +22,22 @@ func RunGUIorHeadless(headless bool, allJobData []shared.JobData) {
 				i+1, job.Location, job.JobTitle, job.CompanyName)
 		}
 	} else {
-		createGui(allJobData)
+		createGuiWindows(allJobData)
 	}
 }
 
-func createGui(jobs []shared.JobData) {
-	mainWindow := createGuiWindow()
+func createGuiWindows(jobs []shared.JobData) {
+	startWindow := createGuiWindow("start window")
+	mainWindow := createGuiWindow("main window")
 	gui_data := creatGuiData(mainWindow, jobs)
-	build.BuildWindow(gui_data)
-	mainWindow.ShowAndRun()
+	mainWindow = build.BuildMainWindow(gui_data)
+	startWindow = build.BuildStartWindow(startWindow, mainWindow)
+	startWindow.ShowAndRun()
 }
 
-func createGuiWindow() fyne.Window {
+func createGuiWindow(title string) fyne.Window {
 	application := app.New()
-	Window := application.NewWindow("fyne window")
+	Window := application.NewWindow(title)
 	Window.Resize(fyne.NewSize(1000, 600))
 	return Window
 }

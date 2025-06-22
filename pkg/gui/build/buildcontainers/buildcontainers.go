@@ -10,6 +10,13 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
+func BuildStartContainer(startWindow fyne.Window, mainWindow fyne.Window) *fyne.Container {
+	startLabel := buildwidgets.BuildLabel("Welcome to Job Visualizer", true, false)
+	startButton := buildwidgets.BuildStartButton(startWindow, mainWindow)
+
+	return container.NewVBox(startLabel, startButton)
+}
+
 func BuildLeftSplit(jobs []shared.JobData) *container.Split {
 	createJobList()
 	refreshButton, filterButton, selectedDetailsButton := buildwidgets.BuildMainButtons(jobs)
