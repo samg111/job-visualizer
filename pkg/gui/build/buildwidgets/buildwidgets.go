@@ -22,6 +22,17 @@ func BuildMainButtons(jobs []shared.JobData) (*widget.Button, *widget.Button, *w
 	return refreshButton, filterButton, selectedDetailsButton
 }
 
+func BuildRemoteCheckbox() *widget.Check {
+	remoteCheckbox := widget.NewCheck("Remote Work: check for yes, uncheck for all", func(checked bool) {
+		if checked {
+			shared.Window.Filters.WorkFromHomeEntry = true
+		} else {
+			shared.Window.Filters.WorkFromHomeEntry = false
+		}
+	})
+	return remoteCheckbox
+}
+
 func handleJobRefresh(jobs []shared.JobData) {
 	removeActiveFilters()
 	jobs = jobdata.GetJobData(jobs)
