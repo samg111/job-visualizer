@@ -2,13 +2,22 @@ package build
 
 import (
 	"fmt"
-	"job-visualizer/pkg/gui/buttons"
+	"job-visualizer/pkg/gui/build/buildcontainers"
+	"job-visualizer/pkg/gui/build/buildwidgets"
 	"job-visualizer/pkg/shared"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/widget"
 )
+
+func BuildWindow(gui_data shared.GuiData) {
+	mainWindow := gui_data.MainWindow
+	jobs := gui_data.Jobs
+	contentPane := buildMainWindow(jobs)
+
+	mainWindow.SetContent(contentPane)
+}
 
 func buildMainWindow(jobs []shared.JobData) *container.Split {
 	leftSplit := buildLeftSplit(jobs)
@@ -20,9 +29,9 @@ func buildMainWindow(jobs []shared.JobData) *container.Split {
 
 func buildLeftSplit(jobs []shared.JobData) *container.Split {
 	createJobList()
-	refreshButton, filterButton, selectedDetailsButton := buttons.BuildMainButtons(jobs)
+	refreshButton, filterButton, selectedDetailsButton := buildwidgets.BuildMainButtons(jobs)
 
-	filterContainer, remoteCheckbox := buildFilterComponents()
+	filterContainer, remoteCheckbox := buildcontainers.BuildFilterComponents()
 
 	jobScroll := container.NewScroll(shared.Window.ListWidget)
 	filterVBox := container.NewVBox(refreshButton, filterContainer, remoteCheckbox, filterButton)

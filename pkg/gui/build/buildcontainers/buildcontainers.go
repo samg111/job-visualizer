@@ -1,4 +1,4 @@
-package build
+package buildcontainers
 
 import (
 	"job-visualizer/pkg/shared"
@@ -8,7 +8,7 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
-func buildFilterComponents() (*fyne.Container, *widget.Check) {
+func BuildFilterComponents() (*fyne.Container, *widget.Check) {
 	keywordContainer := buildKeywordContainer()
 	locationContainer := buildLocationContainer()
 	minSalaryContainer := buildMinSalaryContainer()

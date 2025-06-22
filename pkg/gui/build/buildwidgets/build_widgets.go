@@ -1,4 +1,4 @@
-package buttons
+package buildwidgets
 
 import (
 	"job-visualizer/pkg/jobdata"
