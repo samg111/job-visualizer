@@ -31,7 +31,7 @@ func BuildStartButton(startWindow fyne.Window, mainWindow fyne.Window) *widget.B
 }
 
 func BuildLabel(text string, boldBool bool, italicBool bool) *widget.Label {
-	return widget.NewLabelWithStyle(text, fyne.TextAlignLeading,
+	return widget.NewLabelWithStyle(text, fyne.TextAlignCenter,
 		fyne.TextStyle{Bold: boldBool, Italic: italicBool})
 }
 

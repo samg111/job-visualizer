@@ -11,7 +11,8 @@ import (
 )
 
 func BuildStartContainer(startWindow fyne.Window, mainWindow fyne.Window) *fyne.Container {
-	startLabel := buildwidgets.BuildLabel("Welcome to Job Visualizer", true, false)
+	startLabel := buildwidgets.BuildLabel("Welcome to job-visualizer, click the button to get started",
+	true, false)
 	startButton := buildwidgets.BuildStartButton(startWindow, mainWindow)
 
 	return container.NewVBox(startLabel, startButton)

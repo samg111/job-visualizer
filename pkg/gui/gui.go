@@ -27,8 +27,8 @@ func RunGUIorHeadless(headless bool, allJobData []shared.JobData) {
 }
 
 func createGuiWindows(jobs []shared.JobData) {
-	startWindow := createGuiWindow("start window")
-	mainWindow := createGuiWindow("main window")
+	startWindow := createGuiWindow("job-visualizer")
+	mainWindow := createGuiWindow("job-visualizer")
 	gui_data := creatGuiData(mainWindow, jobs)
 	mainWindow = build.BuildMainWindow(gui_data)
 	startWindow = build.BuildStartWindow(startWindow, mainWindow)
