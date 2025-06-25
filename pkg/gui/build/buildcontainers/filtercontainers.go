@@ -1,4 +1,4 @@
-package build
+package buildcontainers
 
 import (
 	"job-visualizer/pkg/shared"
@@ -7,15 +7,6 @@ import (
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/widget"
 )
-
-func buildFilterComponents() (*fyne.Container, *widget.Check) {
-	keywordContainer := buildKeywordContainer()
-	locationContainer := buildLocationContainer()
-	minSalaryContainer := buildMinSalaryContainer()
-	filterContainer := container.NewVBox(keywordContainer, locationContainer, minSalaryContainer)
-	remoteCheckbox := buildRemoteCheckbox()
-	return filterContainer, remoteCheckbox
-}
 
 func buildKeywordContainer() *fyne.Container {
 	shared.Window.KeywordEntryWidget = widget.NewEntry()
@@ -45,15 +36,4 @@ func buildMinSalaryContainer() *fyne.Container {
 	})
 	minSalaryContainer := container.NewGridWithColumns(2, shared.Window.MinSalaryEntryWidget, minSalaryButton)
 	return minSalaryContainer
-}
-
-func buildRemoteCheckbox() *widget.Check {
-	remoteCheckbox := widget.NewCheck("Remote Work: check for yes, uncheck for all", func(checked bool) {
-		if checked {
-			shared.Window.Filters.WorkFromHomeEntry = true
-		} else {
-			shared.Window.Filters.WorkFromHomeEntry = false
-		}
-	})
-	return remoteCheckbox
 }

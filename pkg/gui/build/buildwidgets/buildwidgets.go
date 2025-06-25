@@ -1,10 +1,11 @@
-package buttons
+package buildwidgets
 
 import (
 	"job-visualizer/pkg/jobdata"
 	"job-visualizer/pkg/mapping"
 	"job-visualizer/pkg/shared"
 
+	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/widget"
 )
 
@@ -20,6 +21,29 @@ func BuildMainButtons(jobs []shared.JobData) (*widget.Button, *widget.Button, *w
 	})
 
 	return refreshButton, filterButton, selectedDetailsButton
+}
+
+func BuildStartButton(startWindow fyne.Window, mainWindow fyne.Window) *widget.Button {
+	return widget.NewButton("Start Application", func() {
+		startWindow.Hide()
+		mainWindow.Show()
+	})
+}
+
+func BuildLabel(text string, boldBool bool, italicBool bool) *widget.Label {
+	return widget.NewLabelWithStyle(text, fyne.TextAlignCenter,
+		fyne.TextStyle{Bold: boldBool, Italic: italicBool})
+}
+
+func BuildRemoteCheckbox() *widget.Check {
+	remoteCheckbox := widget.NewCheck("Remote Work: check for yes, uncheck for all", func(checked bool) {
+		if checked {
+			shared.Window.Filters.WorkFromHomeEntry = true
+		} else {
+			shared.Window.Filters.WorkFromHomeEntry = false
+		}
+	})
+	return remoteCheckbox
 }
 
 func handleJobRefresh(jobs []shared.JobData) {
