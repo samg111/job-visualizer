@@ -32,3 +32,6 @@ job_data.sqlite
 
 #cache files
 cached_locations.json
+
+#todo notes
+todo.txt
