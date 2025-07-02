@@ -25,7 +25,7 @@ func BuildMainButtons(jobs []shared.JobData) (*widget.Button, *widget.Button, *w
 	return refreshButton, filterButton, selectedDetailsButton
 }
 
-func BuildStartButtons(startWindow fyne.Window, mainWindow fyne.Window, inputFileLabel *widget.Label) (*widget.Button, *widget.Button) {
+func BuildStartButtons(window fyne.Window, inputFileLabel *widget.Label) *widget.Button {
 	inputFileButton := widget.NewButton("Select Input Files", func() {
 		fileDialog := dialog.NewFileOpen(func(reader fyne.URIReadCloser, err error) {
 			shared.CheckErrorWarn(err)
@@ -36,14 +36,10 @@ func BuildStartButtons(startWindow fyne.Window, mainWindow fyne.Window, inputFil
 			defer reader.Close()
 			selectedFile := reader.URI().Path()
 			inputFileLabel.SetText(fmt.Sprintf("Selected file: %s", selectedFile))
-		}, startWindow)
+		}, window)
 		fileDialog.Show()
 	})
-	startButton := widget.NewButton("Start Application", func() {
-		startWindow.Hide()
-		mainWindow.Show()
-	})
-	return inputFileButton, startButton
+	return inputFileButton
 }
 
 func BuildLabel(text string, boldBool bool, italicBool bool) *widget.Label {
