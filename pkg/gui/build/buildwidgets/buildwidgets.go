@@ -2,7 +2,7 @@ package buildwidgets
 
 import (
 	"fmt"
-	"job-visualizer/pkg/jobdata"
+	"job-visualizer/pkg/jobdata/filter"
 	"job-visualizer/pkg/mapping"
 	"job-visualizer/pkg/shared"
 
@@ -60,14 +60,17 @@ func BuildRemoteCheckbox() *widget.Check {
 
 func handleJobRefresh(jobs []shared.JobData) {
 	removeActiveFilters()
-	jobs = jobdata.GetJobData(jobs)
-	mapping.GenerateMap(jobs)
+	filteredJobs := filter.FilterJobs(jobs)
+	mapping.GenerateMap(filteredJobs)
+	shared.Window.FilteredJobs = &filteredJobs
 	refreshEntries()
 }
 
 func handleJobFilter(jobs []shared.JobData) {
-	jobs = jobdata.GetJobData(jobs)
-	mapping.GenerateMap(jobs)
+	filteredJobs := filter.FilterJobs(jobs)
+	// jobs = jobdata.GetJobData(jobs)
+	mapping.GenerateMap(filteredJobs)
+	shared.Window.FilteredJobs = &filteredJobs
 }
 
 func removeActiveFilters() {
