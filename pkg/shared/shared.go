@@ -38,7 +38,7 @@ type GuiWindow struct {
 	LocationEntryWidget  *widget.Entry
 	MinSalaryEntryWidget *widget.Entry
 	DetailsWidget        *widget.Label
-	JobDataGui           *[]JobData
+	FilteredJobs         *[]JobData
 	SelectedJobDetails   string
 	Filters              FilterEntries
 	Server               *http.Server

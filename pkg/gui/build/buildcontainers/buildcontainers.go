@@ -49,14 +49,14 @@ func BuildRightSplit() *fyne.Container {
 
 func createJobList() {
 	getDataLen := func() int {
-		if shared.Window.JobDataGui == nil {
+		if shared.Window.FilteredJobs == nil {
 			return 0
 		}
-		return len(*shared.Window.JobDataGui)
+		return len(*shared.Window.FilteredJobs)
 	}
 
 	updateListItem := func(itemNum widget.ListItemID, listItem fyne.CanvasObject) {
-		itemName := (*shared.Window.JobDataGui)[itemNum].CompanyName
+		itemName := (*shared.Window.FilteredJobs)[itemNum].CompanyName
 		listItem.(*widget.Label).SetText(itemName)
 	}
 	shared.Window.ListWidget = widget.NewList(getDataLen, createListItem, updateListItem)
@@ -70,7 +70,7 @@ func createListItem() fyne.CanvasObject {
 }
 
 func formatJobDetails(i int, window shared.GuiWindow) string {
-	jobData := *window.JobDataGui
+	jobData := *window.FilteredJobs
 	job := jobData[i]
 	formattedDetails := fmt.Sprintf("Company Name:\n\t%s\n\nJob Title:\n\t%s\n\nLocation:\n\t%s\n\nDate Posted:"+
 		"\n\t%s\n\nSalary:\n\t%d\n\nWork From Home:\n\t%s\n\nQualifications:\n\t%s\n\nLinks:\n\t%s\n\n",
