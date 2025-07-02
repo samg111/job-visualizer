@@ -10,6 +10,8 @@ import (
 )
 
 var Window GuiWindow
+var StartWindow fyne.Window
+var MainWindow fyne.Window
 
 type JobData struct {
 	Location             string

@@ -10,11 +10,11 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
-func BuildStartContainer(startWindow fyne.Window, mainWindow fyne.Window) *fyne.Container {
+func BuildStartContainer(window fyne.Window, startButton *widget.Button) *fyne.Container {
 	startLabel := buildwidgets.BuildLabel("Welcome to job-visualizer, choose your input files and output file location",
 		true, false)
 	inputFileLabel := buildwidgets.BuildLabel("No files selected", false, false)
-	inputFileButton, startButton := buildwidgets.BuildStartButtons(startWindow, mainWindow, inputFileLabel)
+	inputFileButton := buildwidgets.BuildStartButtons(window, inputFileLabel)
 
 	return container.NewVBox(startLabel, inputFileLabel, inputFileButton, startButton)
 }
