@@ -10,6 +10,8 @@ import (
 	"fyne.io/fyne/v2/app"
 )
 
+var application fyne.App
+
 func RunGUIorHeadless(headless bool, allJobData []shared.JobData) {
 	if headless {
 		for i, job := range allJobData {
@@ -27,6 +29,7 @@ func RunGUIorHeadless(headless bool, allJobData []shared.JobData) {
 }
 
 func createGuiWindows(jobs []shared.JobData) {
+	application = app.NewWithID("job-visualizer")
 	startWindow := createGuiWindow("job-visualizer")
 	mainWindow := createGuiWindow("job-visualizer")
 	gui_data := creatGuiData(mainWindow, jobs)
@@ -36,7 +39,7 @@ func createGuiWindows(jobs []shared.JobData) {
 }
 
 func createGuiWindow(title string) fyne.Window {
-	application := app.New()
+	// application := app.NewWithID("job-visualizer")
 	Window := application.NewWindow(title)
 	Window.Resize(fyne.NewSize(1000, 600))
 	return Window

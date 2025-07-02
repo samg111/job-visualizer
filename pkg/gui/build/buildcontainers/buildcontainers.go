@@ -11,11 +11,12 @@ import (
 )
 
 func BuildStartContainer(startWindow fyne.Window, mainWindow fyne.Window) *fyne.Container {
-	startLabel := buildwidgets.BuildLabel("Welcome to job-visualizer, click the button to get started",
-	true, false)
-	startButton := buildwidgets.BuildStartButton(startWindow, mainWindow)
+	startLabel := buildwidgets.BuildLabel("Welcome to job-visualizer, choose your input files and output file location",
+		true, false)
+	inputFileLabel := buildwidgets.BuildLabel("No files selected", false, false)
+	inputFileButton, startButton := buildwidgets.BuildStartButtons(startWindow, mainWindow, inputFileLabel)
 
-	return container.NewVBox(startLabel, startButton)
+	return container.NewVBox(startLabel, inputFileLabel, inputFileButton, startButton)
 }
 
 func BuildLeftSplit(jobs []shared.JobData) *container.Split {

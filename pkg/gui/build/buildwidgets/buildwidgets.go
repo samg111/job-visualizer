@@ -1,11 +1,13 @@
 package buildwidgets
 
 import (
+	"fmt"
 	"job-visualizer/pkg/jobdata"
 	"job-visualizer/pkg/mapping"
 	"job-visualizer/pkg/shared"
 
 	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/dialog"
 	"fyne.io/fyne/v2/widget"
 )
 
@@ -23,11 +25,25 @@ func BuildMainButtons(jobs []shared.JobData) (*widget.Button, *widget.Button, *w
 	return refreshButton, filterButton, selectedDetailsButton
 }
 
-func BuildStartButton(startWindow fyne.Window, mainWindow fyne.Window) *widget.Button {
-	return widget.NewButton("Start Application", func() {
+func BuildStartButtons(startWindow fyne.Window, mainWindow fyne.Window, inputFileLabel *widget.Label) (*widget.Button, *widget.Button) {
+	inputFileButton := widget.NewButton("Select Input Files", func() {
+		fileDialog := dialog.NewFileOpen(func(reader fyne.URIReadCloser, err error) {
+			shared.CheckErrorWarn(err)
+			if reader == nil {
+				println("user cancelled file selection")
+				return
+			}
+			defer reader.Close()
+			selectedFile := reader.URI().Path()
+			inputFileLabel.SetText(fmt.Sprintf("Selected file: %s", selectedFile))
+		}, startWindow)
+		fileDialog.Show()
+	})
+	startButton := widget.NewButton("Start Application", func() {
 		startWindow.Hide()
 		mainWindow.Show()
 	})
+	return inputFileButton, startButton
 }
 
 func BuildLabel(text string, boldBool bool, italicBool bool) *widget.Label {
