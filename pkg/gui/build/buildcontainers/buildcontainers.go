@@ -15,10 +15,8 @@ func BuildStartContainer(window fyne.Window, startButton *widget.Button, progres
 		true, false)
 	inputFileLabel := buildwidgets.BuildLabel("No files selected", false, false)
 	inputFileButton := buildwidgets.BuildStartButtons(window, inputFileLabel)
-	// progressBar := widget.NewProgressBar()
-	// progressBar.SetValue(0)
 
-	return container.NewVBox(startLabel, inputFileLabel, inputFileButton, startButton, progressBar)
+	return container.NewVBox(startLabel, inputFileLabel, inputFileButton, progressBar, startButton)
 }
 
 func BuildLeftSplit(jobs []shared.JobData) *container.Split {
@@ -29,7 +27,7 @@ func BuildLeftSplit(jobs []shared.JobData) *container.Split {
 
 	filterContainer := buildFilterContainer()
 
-	jobScroll := container.NewScroll(shared.Window.ListWidget)
+	jobScroll := container.NewScroll(shared.WindowData.ListWidget)
 	filterVBox := container.NewVBox(refreshButton, filterContainer, filterButton)
 	selectedDetailsContainer := container.NewBorder(
 		selectedDetailsLabel,
@@ -44,26 +42,26 @@ func BuildLeftSplit(jobs []shared.JobData) *container.Split {
 func BuildRightSplit() *fyne.Container {
 	detailsLabel := buildwidgets.BuildLabel("Select a job to display details", true, false)
 	detailsLabel.Wrapping = fyne.TextWrapWord
-	shared.Window.DetailsWidget = detailsLabel
-	rightPane := container.NewVBox(shared.Window.DetailsWidget)
+	shared.WindowData.DetailsWidget = detailsLabel
+	rightPane := container.NewVBox(shared.WindowData.DetailsWidget)
 	return rightPane
 }
 
 func createJobList() {
 	getDataLen := func() int {
-		if shared.Window.FilteredJobs == nil {
+		if shared.WindowData.FilteredJobs == nil {
 			return 0
 		}
-		return len(*shared.Window.FilteredJobs)
+		return len(*shared.WindowData.FilteredJobs)
 	}
 
 	updateListItem := func(itemNum widget.ListItemID, listItem fyne.CanvasObject) {
-		itemName := (*shared.Window.FilteredJobs)[itemNum].CompanyName
+		itemName := (*shared.WindowData.FilteredJobs)[itemNum].CompanyName
 		listItem.(*widget.Label).SetText(itemName)
 	}
-	shared.Window.ListWidget = widget.NewList(getDataLen, createListItem, updateListItem)
-	shared.Window.ListWidget.OnSelected = func(i int) {
-		shared.Window.SelectedJobDetails = formatJobDetails(i, shared.Window)
+	shared.WindowData.ListWidget = widget.NewList(getDataLen, createListItem, updateListItem)
+	shared.WindowData.ListWidget.OnSelected = func(i int) {
+		shared.WindowData.SelectedJobDetails = formatJobDetails(i, shared.WindowData)
 	}
 }
 
@@ -71,7 +69,7 @@ func createListItem() fyne.CanvasObject {
 	return widget.NewLabel("list items here")
 }
 
-func formatJobDetails(i int, window shared.GuiWindow) string {
+func formatJobDetails(i int, window shared.GuiWindowData) string {
 	jobData := *window.FilteredJobs
 	job := jobData[i]
 	formattedDetails := fmt.Sprintf("Company Name:\n%s\n\nJob Title:\n%s\n\nLocation:\n%s\n\nDate Posted:"+

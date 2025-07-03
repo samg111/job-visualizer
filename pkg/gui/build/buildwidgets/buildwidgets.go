@@ -19,7 +19,7 @@ func BuildMainButtons(jobs []shared.JobData) (*widget.Button, *widget.Button, *w
 		handleJobFilter(jobs)
 	})
 	selectedDetailsButton := widget.NewButton("Click to display selected job details", func() {
-		shared.Window.DetailsWidget.SetText(shared.Window.SelectedJobDetails)
+		shared.WindowData.DetailsWidget.SetText(shared.WindowData.SelectedJobDetails)
 	})
 
 	return refreshButton, filterButton, selectedDetailsButton
@@ -50,9 +50,9 @@ func BuildLabel(text string, boldBool bool, italicBool bool) *widget.Label {
 func BuildRemoteCheckbox() *widget.Check {
 	remoteCheckbox := widget.NewCheck("Remote Work: check for yes, uncheck for all", func(checked bool) {
 		if checked {
-			shared.Window.Filters.WorkFromHomeEntry = true
+			shared.WindowData.Filters.WorkFromHomeEntry = true
 		} else {
-			shared.Window.Filters.WorkFromHomeEntry = false
+			shared.WindowData.Filters.WorkFromHomeEntry = false
 		}
 	})
 	return remoteCheckbox
@@ -62,29 +62,28 @@ func handleJobRefresh(jobs []shared.JobData) {
 	removeActiveFilters()
 	filteredJobs := filter.FilterJobs(jobs)
 	mapping.GenerateMap(filteredJobs)
-	shared.Window.FilteredJobs = &filteredJobs
+	shared.WindowData.FilteredJobs = &filteredJobs
 	refreshEntries()
 }
 
 func handleJobFilter(jobs []shared.JobData) {
 	filteredJobs := filter.FilterJobs(jobs)
-	// jobs = jobdata.GetJobData(jobs)
 	mapping.GenerateMap(filteredJobs)
-	shared.Window.FilteredJobs = &filteredJobs
+	shared.WindowData.FilteredJobs = &filteredJobs
 }
 
 func removeActiveFilters() {
-	shared.Window.Filters.KeywordEntry = ""
-	shared.Window.Filters.LocationEntry = ""
-	shared.Window.Filters.MinSalaryEntry = ""
-	shared.Window.Filters.WorkFromHomeEntry = false
+	shared.WindowData.Filters.KeywordEntry = ""
+	shared.WindowData.Filters.LocationEntry = ""
+	shared.WindowData.Filters.MinSalaryEntry = ""
+	shared.WindowData.Filters.WorkFromHomeEntry = false
 }
 
 func refreshEntries() {
-	shared.Window.KeywordEntryWidget.SetText("")
-	shared.Window.LocationEntryWidget.SetText("")
-	shared.Window.MinSalaryEntryWidget.SetText("")
-	shared.Window.KeywordEntryWidget.SetPlaceHolder("Enter keyword filter here")
-	shared.Window.LocationEntryWidget.SetPlaceHolder("Enter location filter here")
-	shared.Window.MinSalaryEntryWidget.SetPlaceHolder("Enter minimum salary filter here")
+	shared.WindowData.KeywordEntryWidget.SetText("")
+	shared.WindowData.LocationEntryWidget.SetText("")
+	shared.WindowData.MinSalaryEntryWidget.SetText("")
+	shared.WindowData.KeywordEntryWidget.SetPlaceHolder("Enter keyword filter here")
+	shared.WindowData.LocationEntryWidget.SetPlaceHolder("Enter location filter here")
+	shared.WindowData.MinSalaryEntryWidget.SetPlaceHolder("Enter minimum salary filter here")
 }

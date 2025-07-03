@@ -9,7 +9,7 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
-var Window GuiWindow
+var WindowData GuiWindowData
 var StartWindow fyne.Window
 var MainWindow fyne.Window
 
@@ -32,7 +32,7 @@ type LatLong struct {
 	Longitude float64
 }
 
-type GuiWindow struct {
+type GuiWindowData struct {
 	ListWidget           *widget.List
 	KeywordEntryWidget   *widget.Entry
 	LocationEntryWidget  *widget.Entry
@@ -42,11 +42,6 @@ type GuiWindow struct {
 	SelectedJobDetails   string
 	Filters              FilterEntries
 	Server               *http.Server
-}
-
-type GuiData struct {
-	MainWindow fyne.Window
-	Jobs       []JobData
 }
 
 type FilterEntries struct {
