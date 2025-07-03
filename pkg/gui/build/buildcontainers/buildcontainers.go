@@ -14,9 +14,9 @@ func BuildStartContainer(window fyne.Window, startButton *widget.Button, progres
 	startLabel := buildwidgets.BuildLabel("Welcome to job-visualizer, choose your input files and output file location",
 		true, false)
 	inputFileLabel := buildwidgets.BuildLabel("No files selected", false, false)
-	inputFileButton := buildwidgets.BuildStartButtons(window, inputFileLabel)
+	inputFileButton, quitButton := buildwidgets.BuildStartButtons(window, inputFileLabel)
 
-	return container.NewVBox(startLabel, inputFileLabel, inputFileButton, progressBar, startButton)
+	return container.NewVBox(startLabel, inputFileLabel, inputFileButton, progressBar, startButton, quitButton)
 }
 
 func BuildLeftSplit(jobs []shared.JobData) *container.Split {
@@ -43,7 +43,7 @@ func BuildRightSplit() *fyne.Container {
 	detailsLabel := buildwidgets.BuildLabel("Select a job to display details", true, false)
 	detailsLabel.Wrapping = fyne.TextWrapWord
 	shared.WindowData.DetailsWidget = detailsLabel
-	rightPane := container.NewVBox(shared.WindowData.DetailsWidget)
+	rightPane := container.NewVBox(shared.WindowData.DetailsWidget, buildwidgets.BuildQuitButton())
 	return rightPane
 }
 

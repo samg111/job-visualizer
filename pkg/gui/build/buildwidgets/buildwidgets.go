@@ -25,7 +25,7 @@ func BuildMainButtons(jobs []shared.JobData) (*widget.Button, *widget.Button, *w
 	return refreshButton, filterButton, selectedDetailsButton
 }
 
-func BuildStartButtons(window fyne.Window, inputFileLabel *widget.Label) *widget.Button {
+func BuildStartButtons(window fyne.Window, inputFileLabel *widget.Label) (*widget.Button, *widget.Button) {
 	inputFileButton := widget.NewButton("Select Input Files", func() {
 		fileDialog := dialog.NewFileOpen(func(reader fyne.URIReadCloser, err error) {
 			shared.CheckErrorWarn(err)
@@ -39,7 +39,8 @@ func BuildStartButtons(window fyne.Window, inputFileLabel *widget.Label) *widget
 		}, window)
 		fileDialog.Show()
 	})
-	return inputFileButton
+	quitButton := BuildQuitButton()
+	return inputFileButton, quitButton
 }
 
 func BuildLabel(text string, boldBool bool, italicBool bool) *widget.Label {
@@ -56,6 +57,10 @@ func BuildRemoteCheckbox() *widget.Check {
 		}
 	})
 	return remoteCheckbox
+}
+
+func BuildQuitButton() *widget.Button {
+	return widget.NewButton("Quit", func() { fyne.CurrentApp().Quit() })
 }
 
 func handleJobRefresh(jobs []shared.JobData) {
