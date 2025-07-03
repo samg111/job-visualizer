@@ -6,14 +6,22 @@ import (
 	"github.com/xuri/excelize/v2"
 )
 
-func OpenExcelFile() *excelize.File {
-	file, err := excelize.OpenFile(shared.WindowData.InputFile)
-	shared.CheckError(err)
-	return file
+func OpenExcelFile() []*excelize.File {
+	var allFiles []*excelize.File
+	for _, filePath := range shared.WindowData.InputFiles {
+		file, err := excelize.OpenFile(filePath)
+		shared.CheckError(err)
+		allFiles = append(allFiles, file)
+	}
+	return allFiles
 }
 
-func GetAllRows(file *excelize.File) [][]string {
-	rows, err := file.GetRows("Jobs")
-	shared.CheckError(err)
-	return rows
+func GetAllRows(files []*excelize.File) [][]string {
+	var allRows [][]string
+	for _, file := range files {
+		rows, err := file.GetRows("Jobs")
+		shared.CheckError(err)
+		allRows = append(allRows, rows[1:]...)
+	}
+	return allRows
 }

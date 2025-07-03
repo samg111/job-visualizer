@@ -44,8 +44,8 @@ func createGuiApp() {
 	progressBar.SetValue(0)
 	startButton := widget.NewButton("Start Application", func() {
 		go func() {
-			file := excel.OpenExcelFile()
-			rows := excel.GetAllRows(file)
+			files := excel.OpenExcelFile()
+			rows := excel.GetAllRows(files)
 			allJobData := jobdata.ProcessRows(rows, []shared.JobData{})
 			allJobData = processing.ProcessLatLongs(allJobData, progressBar)
 			allJobData = mapping.GenerateMap(allJobData)

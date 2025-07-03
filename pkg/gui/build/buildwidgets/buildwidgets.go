@@ -1,10 +1,10 @@
 package buildwidgets
 
 import (
-	"fmt"
 	"job-visualizer/pkg/jobdata/filter"
 	"job-visualizer/pkg/mapping"
 	"job-visualizer/pkg/shared"
+	"strings"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/dialog"
@@ -34,9 +34,10 @@ func BuildStartButtons(window fyne.Window, inputFileLabel *widget.Label) (*widge
 				return
 			}
 			defer reader.Close()
-			selectedFile := reader.URI().Path()
-			inputFileLabel.SetText(fmt.Sprintf("Selected file: %s", selectedFile))
-			shared.WindowData.InputFile = selectedFile
+			shared.WindowData.InputFiles = append(shared.WindowData.InputFiles, reader.URI().Path())
+			selectedFiles := strings.Join(shared.WindowData.InputFiles, "\n")
+			inputFileLabel.SetText(selectedFiles)
+
 		}, window)
 		fileDialog.Show()
 	})

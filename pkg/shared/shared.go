@@ -42,7 +42,7 @@ type GuiWindowData struct {
 	SelectedJobDetails   string
 	Filters              FilterEntries
 	Server               *http.Server
-	InputFile            string
+	InputFiles           []string
 }
 
 type FilterEntries struct {
