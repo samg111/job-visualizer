@@ -40,23 +40,29 @@ func RunGUIorHeadless(headless bool) {
 
 func createGuiApp() {
 	application = app.NewWithID("job-visualizer")
+	progressBar := widget.NewProgressBar()
+	progressBar.SetValue(0)
 	startButton := widget.NewButton("Start Application", func() {
-		file := excel.OpenExcelFile()
-		rows := excel.GetAllRows(file)
-		allJobData := jobdata.ProcessRows(rows, []shared.JobData{})
-		allJobData = processing.ProcessLatLongs(allJobData)
-		allJobData = mapping.GenerateMap(allJobData)
+		go func() {
+			file := excel.OpenExcelFile()
+			rows := excel.GetAllRows(file)
+			allJobData := jobdata.ProcessRows(rows, []shared.JobData{})
+			allJobData = processing.ProcessLatLongs(allJobData, progressBar)
+			allJobData = mapping.GenerateMap(allJobData)
 
-		jobsDatabase := database.CreateDatabase()
-		database.SetupDatabase(jobsDatabase)
-		database.WriteToDatabase(jobsDatabase, allJobData)
-		shared.MainWindow = createGuiWindow("job-visualizer")
-		shared.MainWindow = build.BuildMainWindow(shared.MainWindow, allJobData)
-		shared.StartWindow.Hide()
-		shared.MainWindow.Show()
+			jobsDatabase := database.CreateDatabase()
+			database.SetupDatabase(jobsDatabase)
+			database.WriteToDatabase(jobsDatabase, allJobData)
+			fyne.DoAndWait(func() {
+				shared.MainWindow = createGuiWindow("job-visualizer")
+				shared.MainWindow = build.BuildMainWindow(shared.MainWindow, allJobData)
+				shared.StartWindow.Hide()
+				shared.MainWindow.Show()
+			})
+		}()
 	})
 	shared.StartWindow = createGuiWindow("job-visualizer")
-	shared.StartWindow = build.BuildStartWindow(shared.StartWindow, startButton)
+	shared.StartWindow = build.BuildStartWindow(shared.StartWindow, startButton, progressBar)
 	shared.StartWindow.ShowAndRun()
 }
 

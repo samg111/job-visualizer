@@ -9,8 +9,8 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
-func BuildStartWindow(window fyne.Window, startButton *widget.Button) fyne.Window {
-	startContainer := buildcontainers.BuildStartContainer(window, startButton)
+func BuildStartWindow(window fyne.Window, startButton *widget.Button, progressBar *widget.ProgressBar) fyne.Window {
+	startContainer := buildcontainers.BuildStartContainer(window, startButton, progressBar)
 	window.SetContent(startContainer)
 	return window
 }
