@@ -7,7 +7,7 @@ import (
 )
 
 func OpenExcelFile() *excelize.File {
-	file, err := excelize.OpenFile("JobData.xlsx")
+	file, err := excelize.OpenFile(shared.WindowData.InputFile)
 	shared.CheckError(err)
 	return file
 }
