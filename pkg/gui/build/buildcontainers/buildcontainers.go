@@ -72,8 +72,8 @@ func createListItem() fyne.CanvasObject {
 func formatJobDetails(i int, window shared.GuiWindow) string {
 	jobData := *window.FilteredJobs
 	job := jobData[i]
-	formattedDetails := fmt.Sprintf("Company Name:\n\t%s\n\nJob Title:\n\t%s\n\nLocation:\n\t%s\n\nDate Posted:"+
-		"\n\t%s\n\nSalary:\n\t%d\n\nWork From Home:\n\t%s\n\nQualifications:\n\t%s\n\nLinks:\n\t%s\n\n",
+	formattedDetails := fmt.Sprintf("Company Name:\n%s\n\nJob Title:\n%s\n\nLocation:\n%s\n\nDate Posted:"+
+		"\n%s\n\nSalary:\n%d\n\nWork From Home:\n%s\n\nQualifications:\n%s\n\nLinks:\n%s\n\n",
 		job.CompanyName, job.JobTitle, job.Location, job.DatePosted, job.Salary, job.WorkFromHome, job.Qualifications,
 		job.Links)
 	return formattedDetails
