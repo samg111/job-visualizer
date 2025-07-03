@@ -55,6 +55,7 @@ func createGuiApp() {
 			database.WriteToDatabase(jobsDatabase, allJobData)
 			fyne.DoAndWait(func() {
 				shared.MainWindow = createGuiWindow("job-visualizer")
+				shared.MainWindow.SetOnClosed(func() { application.Quit() })
 				shared.MainWindow = build.BuildMainWindow(shared.MainWindow, allJobData)
 				shared.StartWindow.Hide()
 				shared.MainWindow.Show()

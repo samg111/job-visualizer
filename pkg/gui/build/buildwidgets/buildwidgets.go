@@ -36,6 +36,7 @@ func BuildStartButtons(window fyne.Window, inputFileLabel *widget.Label) (*widge
 			defer reader.Close()
 			selectedFile := reader.URI().Path()
 			inputFileLabel.SetText(fmt.Sprintf("Selected file: %s", selectedFile))
+			shared.WindowData.InputFile = selectedFile
 		}, window)
 		fileDialog.Show()
 	})
