@@ -9,10 +9,10 @@ import (
 
 func CreateDatabase() *sql.DB {
 	databasePath := filepath.Join(shared.Program.OutputDirectory, "job_data.sqlite")
-	os.Remove(databasePath)
+	err := os.Remove(databasePath)
+	shared.CheckErrorWarn(err)
 	db, err := sql.Open("sqlite", databasePath)
 	shared.CheckError(err)
-	// defer db.Close()
 	return db
 }
 

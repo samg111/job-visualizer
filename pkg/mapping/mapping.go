@@ -19,7 +19,7 @@ func init() {
 func mapPage(writer http.ResponseWriter, request *http.Request) {
 	if geoplotMap != nil {
 		writer.Header().Set("Content-Type", "text/html")
-		fmt.Fprint(writer, `
+		_, err := fmt.Fprint(writer, `
             <html>
                 <head>
                     <title>job-visualizer Map</title>
@@ -29,6 +29,7 @@ func mapPage(writer http.ResponseWriter, request *http.Request) {
                 </body>
             </html>
         `)
+		shared.CheckErrorWarn(err)
 	} else {
 		http.Error(writer, "Map not ready", http.StatusServiceUnavailable)
 	}

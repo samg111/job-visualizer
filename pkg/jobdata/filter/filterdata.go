@@ -80,9 +80,5 @@ func filterMinSalary(job shared.JobData, filter string) bool {
 }
 
 func filterWorkFromHome(job shared.JobData) bool {
-	filterMatch := false
-	if job.WorkFromHome == "Yes" {
-		filterMatch = true
-	}
-	return filterMatch
+	return job.WorkFromHome == "Yes"
 }

@@ -33,7 +33,10 @@ func BuildStartButtons(window fyne.Window, inputFileLabel *widget.Label, outputD
 				println("user cancelled file selection")
 				return
 			}
-			defer reader.Close()
+			defer func() {
+				err = reader.Close()
+				shared.CheckErrorWarn(err)
+			}()
 			shared.Program.InputFiles = append(shared.Program.InputFiles, reader.URI().Path())
 			selectedFiles := strings.Join(shared.Program.InputFiles, "\n")
 			inputFileLabel.SetText(selectedFiles)

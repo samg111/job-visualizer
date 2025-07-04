@@ -31,7 +31,10 @@ func ProcessLatLongs(jobs []shared.JobData, progressBar *widget.ProgressBar) []s
 func loadCacheFromFile(filename string, cachedLocations map[string]shared.LatLong) {
 	file, err := os.Open(filename)
 	shared.CheckErrorWarn(err)
-	defer file.Close()
+	defer func() {
+		err = file.Close()
+		shared.CheckErrorWarn(err)
+	}()
 	dec := json.NewDecoder(file)
 	err = dec.Decode(&cachedLocations)
 	shared.CheckErrorWarn(err)
@@ -86,7 +89,10 @@ func assignLatLongs(jobs []shared.JobData, cachedLocations map[string]shared.Lat
 func saveCacheToFile(filename string, cachedLocations map[string]shared.LatLong) {
 	file, err := os.Create(filename)
 	shared.CheckErrorWarn(err)
-	defer file.Close()
+	defer func() {
+		err = file.Close()
+		shared.CheckErrorWarn(err)
+	}()
 	enc := json.NewEncoder(file)
 	err = enc.Encode(cachedLocations)
 	shared.CheckErrorWarn(err)

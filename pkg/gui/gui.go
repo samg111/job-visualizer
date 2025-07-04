@@ -40,6 +40,7 @@ func RunGUIorHeadless(headless bool) {
 
 		}
 		shared.Program.InputFiles = inputFiles
+		shared.Program.OutputDirectory = workingDirectory
 
 		allJobData := processJobs(nil)
 		for i, job := range allJobData {
