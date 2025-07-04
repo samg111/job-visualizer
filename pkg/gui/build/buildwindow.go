@@ -6,17 +6,16 @@ import (
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/widget"
 )
 
-func BuildStartWindow(startWindow fyne.Window, mainWindow fyne.Window) fyne.Window {
-	startContainer := buildcontainers.BuildStartContainer(startWindow, mainWindow)
-	startWindow.SetContent(startContainer)
-	return startWindow
+func BuildStartWindow(window fyne.Window, startButton *widget.Button, progressBar *widget.ProgressBar) fyne.Window {
+	startContainer := buildcontainers.BuildStartContainer(window, startButton, progressBar)
+	window.SetContent(startContainer)
+	return window
 }
 
-func BuildMainWindow(gui_data shared.GuiData) fyne.Window {
-	window := gui_data.MainWindow
-	jobs := gui_data.Jobs
+func BuildMainWindow(window fyne.Window, jobs []shared.JobData) fyne.Window {
 	contentPane := buildMainContent(jobs)
 	window.SetContent(contentPane)
 	return window

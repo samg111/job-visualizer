@@ -9,31 +9,31 @@ import (
 )
 
 func buildKeywordContainer() *fyne.Container {
-	shared.Window.KeywordEntryWidget = widget.NewEntry()
-	shared.Window.KeywordEntryWidget.SetPlaceHolder("Enter keyword filter here")
+	shared.WindowData.KeywordEntryWidget = widget.NewEntry()
+	shared.WindowData.KeywordEntryWidget.SetPlaceHolder("Enter keyword filter here")
 	keywordButton := widget.NewButton("Click to apply keyword", func() {
-		shared.Window.Filters.KeywordEntry = shared.Window.KeywordEntryWidget.Text
+		shared.WindowData.Filters.KeywordEntry = shared.WindowData.KeywordEntryWidget.Text
 	})
-	keywordContainer := container.NewGridWithColumns(2, shared.Window.KeywordEntryWidget, keywordButton)
+	keywordContainer := container.NewGridWithColumns(2, shared.WindowData.KeywordEntryWidget, keywordButton)
 	return keywordContainer
 }
 
 func buildLocationContainer() *fyne.Container {
-	shared.Window.LocationEntryWidget = widget.NewEntry()
-	shared.Window.LocationEntryWidget.SetPlaceHolder("Enter location filter here")
+	shared.WindowData.LocationEntryWidget = widget.NewEntry()
+	shared.WindowData.LocationEntryWidget.SetPlaceHolder("Enter location filter here")
 	locationButton := widget.NewButton("Click to apply location", func() {
-		shared.Window.Filters.LocationEntry = shared.Window.LocationEntryWidget.Text
+		shared.WindowData.Filters.LocationEntry = shared.WindowData.LocationEntryWidget.Text
 	})
-	locationContainer := container.NewGridWithColumns(2, shared.Window.LocationEntryWidget, locationButton)
+	locationContainer := container.NewGridWithColumns(2, shared.WindowData.LocationEntryWidget, locationButton)
 	return locationContainer
 }
 
 func buildMinSalaryContainer() *fyne.Container {
-	shared.Window.MinSalaryEntryWidget = widget.NewEntry()
-	shared.Window.MinSalaryEntryWidget.SetPlaceHolder("Enter minimum salary filter here")
+	shared.WindowData.MinSalaryEntryWidget = widget.NewEntry()
+	shared.WindowData.MinSalaryEntryWidget.SetPlaceHolder("Enter minimum salary filter here")
 	minSalaryButton := widget.NewButton("Click to apply minimum salary", func() {
-		shared.Window.Filters.MinSalaryEntry = shared.Window.MinSalaryEntryWidget.Text
+		shared.WindowData.Filters.MinSalaryEntry = shared.WindowData.MinSalaryEntryWidget.Text
 	})
-	minSalaryContainer := container.NewGridWithColumns(2, shared.Window.MinSalaryEntryWidget, minSalaryButton)
+	minSalaryContainer := container.NewGridWithColumns(2, shared.WindowData.MinSalaryEntryWidget, minSalaryButton)
 	return minSalaryContainer
 }

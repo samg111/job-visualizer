@@ -12,14 +12,17 @@ import (
 	"net/http"
 	"net/url"
 	"strconv"
+
+	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/widget"
 )
 
-func ProcessLatLongs(jobs []shared.JobData) []shared.JobData {
+func ProcessLatLongs(jobs []shared.JobData, progressBar *widget.ProgressBar) []shared.JobData {
 	cacheFilename := "cached_locations.json"
 	cachedLocations := make(map[string]shared.LatLong)
 	loadCacheFromFile(cacheFilename, cachedLocations)
 	jobs = standardizeLocations(jobs)
-	cacheLatLongs(jobs, cachedLocations)
+	cacheLatLongs(jobs, cachedLocations, progressBar)
 	jobs = assignLatLongs(jobs, cachedLocations)
 	saveCacheToFile(cacheFilename, cachedLocations)
 	return jobs
@@ -28,7 +31,10 @@ func ProcessLatLongs(jobs []shared.JobData) []shared.JobData {
 func loadCacheFromFile(filename string, cachedLocations map[string]shared.LatLong) {
 	file, err := os.Open(filename)
 	shared.CheckErrorWarn(err)
-	defer file.Close()
+	defer func() {
+		err = file.Close()
+		shared.CheckErrorWarn(err)
+	}()
 	dec := json.NewDecoder(file)
 	err = dec.Decode(&cachedLocations)
 	shared.CheckErrorWarn(err)
@@ -48,9 +54,14 @@ func standardizeLocations(jobs []shared.JobData) []shared.JobData {
 	return jobs
 }
 
-func cacheLatLongs(jobs []shared.JobData, cachedLocations map[string]shared.LatLong) {
+func cacheLatLongs(jobs []shared.JobData, cachedLocations map[string]shared.LatLong, progressBar *widget.ProgressBar) {
 	for i, job := range jobs {
 		fmt.Printf("\rcaching job locations (%d/%d)", i+1, len(jobs))
+		if progressBar != nil {
+			fyne.Do(func() {
+				progressBar.SetValue(float64(i+1) / float64(len(jobs)))
+			})
+		}
 		if _, ok := cachedLocations[job.StandardizedLocation]; ok {
 		} else {
 			responseBody := getNominatimResponse(job.StandardizedLocation)
@@ -78,7 +89,10 @@ func assignLatLongs(jobs []shared.JobData, cachedLocations map[string]shared.Lat
 func saveCacheToFile(filename string, cachedLocations map[string]shared.LatLong) {
 	file, err := os.Create(filename)
 	shared.CheckErrorWarn(err)
-	defer file.Close()
+	defer func() {
+		err = file.Close()
+		shared.CheckErrorWarn(err)
+	}()
 	enc := json.NewEncoder(file)
 	err = enc.Encode(cachedLocations)
 	shared.CheckErrorWarn(err)

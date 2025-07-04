@@ -19,7 +19,7 @@ func init() {
 func mapPage(writer http.ResponseWriter, request *http.Request) {
 	if geoplotMap != nil {
 		writer.Header().Set("Content-Type", "text/html")
-		fmt.Fprint(writer, `
+		_, err := fmt.Fprint(writer, `
             <html>
                 <head>
                     <title>job-visualizer Map</title>
@@ -29,6 +29,7 @@ func mapPage(writer http.ResponseWriter, request *http.Request) {
                 </body>
             </html>
         `)
+		shared.CheckErrorWarn(err)
 	} else {
 		http.Error(writer, "Map not ready", http.StatusServiceUnavailable)
 	}
@@ -45,7 +46,7 @@ func innerMap(writer http.ResponseWriter, request *http.Request) {
 
 func GenerateMap(jobs []shared.JobData) []shared.JobData {
 	geoplotMap = createGeoplotMap(jobs)
-	shared.Window.Server = createHttpServer()
+	shared.WindowData.Server = createHttpServer()
 	openWebpage()
 	return jobs
 }
@@ -133,8 +134,8 @@ func displayDescription(markerJobs []shared.JobData) string {
 }
 
 func createHttpServer() *http.Server {
-	if shared.Window.Server != nil {
-		err := shared.Window.Server.Close()
+	if shared.WindowData.Server != nil {
+		err := shared.WindowData.Server.Close()
 		shared.CheckErrorWarn(err)
 	}
 	server := &http.Server{Addr: ":8080"}

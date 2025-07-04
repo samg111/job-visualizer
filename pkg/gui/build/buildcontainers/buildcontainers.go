@@ -10,12 +10,18 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
-func BuildStartContainer(startWindow fyne.Window, mainWindow fyne.Window) *fyne.Container {
-	startLabel := buildwidgets.BuildLabel("Welcome to job-visualizer, click the button to get started",
-	true, false)
-	startButton := buildwidgets.BuildStartButton(startWindow, mainWindow)
+func BuildStartContainer(window fyne.Window, startButton *widget.Button, progressBar *widget.ProgressBar) *fyne.Container {
+	startLabel := buildwidgets.BuildLabel("Welcome to job-visualizer, choose your input files and output file location",
+		true, false)
+	inputFileLabel := buildwidgets.BuildLabel("No input files selected", false, false)
+	outputDirectoryLabel := buildwidgets.BuildLabel("No output file selected", false, false)
+	inputFileButton, outputDirectoryButton, quitButton := buildwidgets.BuildStartButtons(window, inputFileLabel, outputDirectoryLabel)
 
-	return container.NewVBox(startLabel, startButton)
+	inputFilesBox := container.NewVBox(inputFileLabel, inputFileButton)
+	outputDirectoryBox := container.NewVBox(outputDirectoryLabel, outputDirectoryButton)
+	inputOutputContainers := container.NewHSplit(inputFilesBox, outputDirectoryBox)
+
+	return container.NewVBox(startLabel, inputOutputContainers, startButton, quitButton)
 }
 
 func BuildLeftSplit(jobs []shared.JobData) *container.Split {
@@ -26,7 +32,7 @@ func BuildLeftSplit(jobs []shared.JobData) *container.Split {
 
 	filterContainer := buildFilterContainer()
 
-	jobScroll := container.NewScroll(shared.Window.ListWidget)
+	jobScroll := container.NewScroll(shared.WindowData.ListWidget)
 	filterVBox := container.NewVBox(refreshButton, filterContainer, filterButton)
 	selectedDetailsContainer := container.NewBorder(
 		selectedDetailsLabel,
@@ -41,26 +47,26 @@ func BuildLeftSplit(jobs []shared.JobData) *container.Split {
 func BuildRightSplit() *fyne.Container {
 	detailsLabel := buildwidgets.BuildLabel("Select a job to display details", true, false)
 	detailsLabel.Wrapping = fyne.TextWrapWord
-	shared.Window.DetailsWidget = detailsLabel
-	rightPane := container.NewVBox(shared.Window.DetailsWidget)
+	shared.WindowData.DetailsWidget = detailsLabel
+	rightPane := container.NewVBox(shared.WindowData.DetailsWidget, buildwidgets.BuildQuitButton())
 	return rightPane
 }
 
 func createJobList() {
 	getDataLen := func() int {
-		if shared.Window.JobDataGui == nil {
+		if shared.WindowData.FilteredJobs == nil {
 			return 0
 		}
-		return len(*shared.Window.JobDataGui)
+		return len(*shared.WindowData.FilteredJobs)
 	}
 
 	updateListItem := func(itemNum widget.ListItemID, listItem fyne.CanvasObject) {
-		itemName := (*shared.Window.JobDataGui)[itemNum].CompanyName
+		itemName := (*shared.WindowData.FilteredJobs)[itemNum].CompanyName
 		listItem.(*widget.Label).SetText(itemName)
 	}
-	shared.Window.ListWidget = widget.NewList(getDataLen, createListItem, updateListItem)
-	shared.Window.ListWidget.OnSelected = func(i int) {
-		shared.Window.SelectedJobDetails = formatJobDetails(i, shared.Window)
+	shared.WindowData.ListWidget = widget.NewList(getDataLen, createListItem, updateListItem)
+	shared.WindowData.ListWidget.OnSelected = func(i int) {
+		shared.WindowData.SelectedJobDetails = formatJobDetails(i, shared.WindowData)
 	}
 }
 
@@ -68,11 +74,11 @@ func createListItem() fyne.CanvasObject {
 	return widget.NewLabel("list items here")
 }
 
-func formatJobDetails(i int, window shared.GuiWindow) string {
-	jobData := *window.JobDataGui
+func formatJobDetails(i int, window shared.GuiWindowData) string {
+	jobData := *window.FilteredJobs
 	job := jobData[i]
-	formattedDetails := fmt.Sprintf("Company Name:\n\t%s\n\nJob Title:\n\t%s\n\nLocation:\n\t%s\n\nDate Posted:"+
-		"\n\t%s\n\nSalary:\n\t%d\n\nWork From Home:\n\t%s\n\nQualifications:\n\t%s\n\nLinks:\n\t%s\n\n",
+	formattedDetails := fmt.Sprintf("Company Name:\n%s\n\nJob Title:\n%s\n\nLocation:\n%s\n\nDate Posted:"+
+		"\n%s\n\nSalary:\n%d\n\nWork From Home:\n%s\n\nQualifications:\n%s\n\nLinks:\n%s\n\n",
 		job.CompanyName, job.JobTitle, job.Location, job.DatePosted, job.Salary, job.WorkFromHome, job.Qualifications,
 		job.Links)
 	return formattedDetails

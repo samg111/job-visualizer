@@ -7,7 +7,7 @@ import (
 )
 
 func FilterJobs(jobs []shared.JobData) []shared.JobData {
-	filters := shared.Window.Filters
+	filters := shared.WindowData.Filters
 	if filters.KeywordEntry != "" || filters.LocationEntry != "" || filters.MinSalaryEntry != "" ||
 		filters.WorkFromHomeEntry {
 		var filteredJobs []shared.JobData
@@ -20,7 +20,7 @@ func FilterJobs(jobs []shared.JobData) []shared.JobData {
 }
 
 func filterIndividualJob(job shared.JobData, filteredJobs []shared.JobData) []shared.JobData {
-	filters := shared.Window.Filters
+	filters := shared.WindowData.Filters
 	filterMatch := true
 	if filters.KeywordEntry != "" {
 		//fmt.Printf("keyword entered: %s", filters.KeywordEntry)
@@ -80,9 +80,5 @@ func filterMinSalary(job shared.JobData, filter string) bool {
 }
 
 func filterWorkFromHome(job shared.JobData) bool {
-	filterMatch := false
-	if job.WorkFromHome == "Yes" {
-		filterMatch = true
-	}
-	return filterMatch
+	return job.WorkFromHome == "Yes"
 }

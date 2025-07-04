@@ -4,13 +4,15 @@ import (
 	"database/sql"
 	"job-visualizer/pkg/shared"
 	"os"
+	"path/filepath"
 )
 
 func CreateDatabase() *sql.DB {
-	os.Remove("job_data.sqlite")
-	db, err := sql.Open("sqlite", "job_data.sqlite")
+	databasePath := filepath.Join(shared.Program.OutputDirectory, "job_data.sqlite")
+	err := os.Remove(databasePath)
+	shared.CheckErrorWarn(err)
+	db, err := sql.Open("sqlite", databasePath)
 	shared.CheckError(err)
-	// defer db.Close()
 	return db
 }
 

@@ -1,7 +1,6 @@
 package jobdata
 
 import (
-	"job-visualizer/pkg/jobdata/filter"
 	"job-visualizer/pkg/shared"
 	"strconv"
 )
@@ -24,14 +23,14 @@ func ProcessRows(rows [][]string, allJobData []shared.JobData) []shared.JobData 
 	return allJobData
 }
 
-func GetJobData(jobs []shared.JobData) []shared.JobData {
-	jobs = filter.FilterJobs(jobs)
-	// jobs = assignLatLongs(jobs)
-	// geoplotMap := createGeoplotMap(jobs)
-	// shared.window.Server = createHttpServer(geoplotMap)
-	shared.Window.JobDataGui = &jobs
-	return jobs
-}
+// func GetJobData(jobs []shared.JobData) []shared.JobData {
+// 	jobs = filter.FilterJobs(jobs)
+// 	// jobs = assignLatLongs(jobs)
+// 	// geoplotMap := createGeoplotMap(jobs)
+// 	// shared.window.Server = createHttpServer(geoplotMap)
+// 	shared.Window.JobDataGui = &jobs
+// 	return jobs
+// }
 
 func calcSalary(row []string) int {
 	maxSalaryString := row[6]
