@@ -54,9 +54,11 @@ func standardizeLocations(jobs []shared.JobData) []shared.JobData {
 func cacheLatLongs(jobs []shared.JobData, cachedLocations map[string]shared.LatLong, progressBar *widget.ProgressBar) {
 	for i, job := range jobs {
 		fmt.Printf("\rcaching job locations (%d/%d)", i+1, len(jobs))
-		fyne.Do(func() {
-			progressBar.SetValue(float64(i+1) / float64(len(jobs)))
-		})
+		if progressBar != nil {
+			fyne.Do(func() {
+				progressBar.SetValue(float64(i+1) / float64(len(jobs)))
+			})
+		}
 		if _, ok := cachedLocations[job.StandardizedLocation]; ok {
 		} else {
 			responseBody := getNominatimResponse(job.StandardizedLocation)

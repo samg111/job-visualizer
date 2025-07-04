@@ -10,6 +10,7 @@ import (
 )
 
 var WindowData GuiWindowData
+var Program ProgramData
 var StartWindow fyne.Window
 var MainWindow fyne.Window
 
@@ -32,6 +33,10 @@ type LatLong struct {
 	Longitude float64
 }
 
+type ProgramData struct {
+	InputFiles []string
+}
+
 type GuiWindowData struct {
 	ListWidget           *widget.List
 	KeywordEntryWidget   *widget.Entry
@@ -42,7 +47,6 @@ type GuiWindowData struct {
 	SelectedJobDetails   string
 	Filters              FilterEntries
 	Server               *http.Server
-	InputFiles           []string
 }
 
 type FilterEntries struct {
