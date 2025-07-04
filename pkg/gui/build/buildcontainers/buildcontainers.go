@@ -13,10 +13,15 @@ import (
 func BuildStartContainer(window fyne.Window, startButton *widget.Button, progressBar *widget.ProgressBar) *fyne.Container {
 	startLabel := buildwidgets.BuildLabel("Welcome to job-visualizer, choose your input files and output file location",
 		true, false)
-	inputFileLabel := buildwidgets.BuildLabel("No files selected", false, false)
-	inputFileButton, quitButton := buildwidgets.BuildStartButtons(window, inputFileLabel)
+	inputFileLabel := buildwidgets.BuildLabel("No input files selected", false, false)
+	outputDirectoryLabel := buildwidgets.BuildLabel("No output file selected", false, false)
+	inputFileButton, outputDirectoryButton, quitButton := buildwidgets.BuildStartButtons(window, inputFileLabel, outputDirectoryLabel)
 
-	return container.NewVBox(startLabel, inputFileLabel, inputFileButton, progressBar, startButton, quitButton)
+	inputFilesBox := container.NewVBox(inputFileLabel, inputFileButton)
+	outputDirectoryBox := container.NewVBox(outputDirectoryLabel, outputDirectoryButton)
+	inputOutputContainers := container.NewHSplit(inputFilesBox, outputDirectoryBox)
+
+	return container.NewVBox(startLabel, inputOutputContainers, startButton, quitButton)
 }
 
 func BuildLeftSplit(jobs []shared.JobData) *container.Split {
