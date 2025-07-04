@@ -8,7 +8,7 @@ import (
 
 func OpenExcelFile() []*excelize.File {
 	var allFiles []*excelize.File
-	for _, filePath := range shared.WindowData.InputFiles {
+	for _, filePath := range shared.Program.InputFiles {
 		file, err := excelize.OpenFile(filePath)
 		shared.CheckError(err)
 		allFiles = append(allFiles, file)
